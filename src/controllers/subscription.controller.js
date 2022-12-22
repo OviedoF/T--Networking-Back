@@ -4,9 +4,9 @@ const axios = require
 const User = require(path.join(__dirname, '..', 'models', 'user.model'));
 const Subscription = require(path.join( __dirname, "..", "models", "subscription.model.js" ));
 
-const CreateSubscription = {}
+const PaymentSubscription = {}
 
-CreateSubscription.getPaymentLink = async (req, res) => {
+PaymentSubscription.getPaymentLink = async (req, res) => {
     try {
         const url = "https://api.mercadopago.com/preapproval";
         const { membership } = req.body;
@@ -56,7 +56,7 @@ CreateSubscription.getPaymentLink = async (req, res) => {
     }
 }
 
-CreateSubscription.paymentSuccess = async (req, res) => {
+PaymentSubscription.paymentSuccess = async (req, res) => {
     try {
         const { idbuyer } = req.headers;
         const { membership } = req.body;
@@ -74,19 +74,20 @@ CreateSubscription.paymentSuccess = async (req, res) => {
 
         products.forEach(async (subscription) => {
             const dbSubscription = await Subscription.findById(subscription.idMembership, {subscriptions: true});
+            const nameSubsciption = await User.findById(idbuyer, {nameSubsciption: true})
 
-            const newSubscriptions = dbSubscription + 1;
+            if ( nameSubsciption.length === 0 ) {
+                const newSubscriptions = dbSubscription + 1;
+                await Subscription.findByIdAndUpdate(subscription.idMembership, {subscriptions: newSubscriptions});
+            }
 
-            await Subscription.findByIdAndUpdate(subscription.idMembership, {subscriptions: newSubscriptions});
             await User.findByIdAndUpdate(idbuyer, {'$pull': { 'Subscription': subscription.idMembership }})
-            await User.findByIdAndUpdate(idbuyer, {nameSubsciption: subscription.name})
+            await User.findByIdAndUpdate(idbuyer, {nameSubsciption: subscription.name})            
             await User.findByIdAndUpdate(idbuyer, {daysSubscription: subscription.days})
             await User.findByIdAndUpdate(idbuyer, {description: subscription.description})
             await User.findByIdAndUpdate(idbuyer, {imageSubscription: subscription.principalImage})
         });
-
-        
-    
+   
         res.status(200).send('Membresia obtenida')
     } catch (error) {
     res.status(500).send(error);
@@ -94,4 +95,13 @@ CreateSubscription.paymentSuccess = async (req, res) => {
   }
 }
 
-module.exports = CreateSubscription;
+/*PaymentSubscription.expirationMembership = async (req, res) => {
+    try {
+
+    } catch (error) {
+    res.status(500).send(error);
+    console.log(error);
+  }
+}*/
+
+module.exports = PaymentSubscription;

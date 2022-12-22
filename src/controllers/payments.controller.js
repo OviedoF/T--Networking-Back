@@ -17,7 +17,7 @@ PaymentsController.getPaymentLink = async (req, res) => {
     const items = cart.map((el) => {
       return {
         id: el._id,
-        title: el.name,
+        title: el.username,
         description: el.description,
         quantity: el.quantity,
         unit_price: el.price,
@@ -80,7 +80,7 @@ PaymentsController.paymentSuccess = async (req, res) => {
 
     const products = cart.map((el) => {
       return {
-        name: el.name,
+        name: el.username,
         quantity: el.quantity,
         price: el.price,
         size: el.sizeSelected,
