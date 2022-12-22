@@ -38,7 +38,7 @@ CreateSubscription.getPaymentLink = async (req, res) => {
             auto_return: "approved",
             statement_descriptor: "Networking", //Descripcion en Resumen de Tarjeta
             notificacion_url: `https://${process.env.ROOT_URL}/api/subscription/notifications`,
-            additional_info: "MEMBRESIA",
+            additional_info: `MEMBRESIA ${auto_recurring.name} POR ${auto_recurring.days}`,
         };
 
         const subscription = await axios.post(url, body, {
@@ -58,18 +58,40 @@ CreateSubscription.getPaymentLink = async (req, res) => {
 
 CreateSubscription.paymentSuccess = async (req, res) => {
     try {
-        const { idbuyer, idseller } = req.headers;
+        const { idbuyer } = req.headers;
         const { membership } = req.body;
         
         const products = membership.map((el) => {
             return {
                 name: el.name,
                 price: el.price,
-                days: el.days
-            }
-        })
+                days: el.days,
+                description: el.description,
+                image: el.principalImage,
+                idMembership: el.id
+            };
+        });
+
+        products.forEach(async (subscription) => {
+            const dbSubscription = await Subscription.findById(subscription.idMembership, {subscriptions: true});
+
+            const newSubscriptions = dbSubscription + 1;
+
+            await Subscription.findByIdAndUpdate(subscription.idMembership, {subscriptions: newSubscriptions});
+            await User.findByIdAndUpdate(idbuyer, {'$pull': { 'Subscription': subscription.idMembership }})
+            await User.findByIdAndUpdate(idbuyer, {nameSubsciption: subscription.name})
+            await User.findByIdAndUpdate(idbuyer, {daysSubscription: subscription.days})
+            await User.findByIdAndUpdate(idbuyer, {description: subscription.description})
+            await User.findByIdAndUpdate(idbuyer, {imageSubscription: subscription.principalImage})
+        });
+
+        
+    
+        res.status(200).send('Membresia obtenida')
     } catch (error) {
     res.status(500).send(error);
     console.log(error);
   }
 }
+
+module.exports = CreateSubscription;

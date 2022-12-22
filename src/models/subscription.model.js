@@ -29,6 +29,10 @@ const subscriptionSchema = new Schema({
         type: String,
         required: true
     },
+
+    subscriptions: {
+        type: Number
+    }
 })
 
 module.exports = model('Subscription', subscriptionSchema)

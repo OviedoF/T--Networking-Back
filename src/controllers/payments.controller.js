@@ -27,10 +27,10 @@ PaymentsController.getPaymentLink = async (req, res) => {
     });
 
     const body = {
-      payer_email: "test_user_83219432@testuser.com",
+      payer_email: "test_user_49360370@testuser.com",
       payer: {
         id: "test_user_49360370",
-        email: "test_user_83219432@testuser.com",
+        email: "test_user_49360370@testuser.com",
         name: "Test User",
       },
       items,
