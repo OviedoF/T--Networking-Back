@@ -93,6 +93,22 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId
     }],
 
+    nameSubscription: [{
+        type: String
+    }],
+
+    daysSubscription: [{
+        type:Number
+    }],
+
+    description: [{
+        type: String
+    }],
+
+    imageSubscription: [{
+        type: String
+    }]
+
 }, {
     timestamps: true,
     versionKey: false
