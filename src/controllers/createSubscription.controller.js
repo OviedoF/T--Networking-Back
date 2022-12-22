@@ -1,5 +1,5 @@
 const path = require('path')
-const Subscription = require(path.join(__dirname, '..', 'models', 'subscriotion.model'))
+const Subscription = require(path.join(__dirname, '..', 'models', 'subscription.model'))
 
 const CreateSubscription = {};
 
