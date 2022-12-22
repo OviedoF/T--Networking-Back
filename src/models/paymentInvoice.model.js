@@ -1,15 +1,27 @@
 const {Schema, model} = require('mongoose');
 
 const paymentInvoiceSchema = new Schema({
-    seller: {
-        ref: 'Networking',
+    state: {
+        type: String,
+        required: true,
+    },
+    invoice: {
+        ref: "PaymentInvoice",
         type: Schema.Types.ObjectId
     },
     buyer: {
-        ref: 'User',
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
     },
-    purchase: [Object]
+    seller: {
+        type: Schema.Types.ObjectId,
+        ref: "Networking",
+        required: true,
+    },
+    images: [String],
+    products: Array,
+    type: String
 }, {
     timestamps: true,
     timeseries: true

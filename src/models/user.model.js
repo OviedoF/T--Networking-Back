@@ -40,6 +40,11 @@ const userSchema = new Schema({
         ref: 'Role',
         type: Schema.Types.ObjectId
     }],
+
+    networking: {
+        ref: 'Networking',
+        type: Schema.Types.ObjectId
+    },
     
     wishList: [{
         ref: "Product",
@@ -55,6 +60,11 @@ const userSchema = new Schema({
         ref: "Purchase",
         type: Schema.Types.ObjectId
     }],
+
+    wallet: {
+        onProperty: Number,
+        onWait: Number
+    },
 
     notifications: [{
         subject: String,
@@ -76,7 +86,13 @@ const userSchema = new Schema({
         name: String,
         link: String,
         user: String
-    }]
+    }],
+
+    subscription: [{
+        ref: "Subscription",
+        type: Schema.Types.ObjectId
+    }],
+
 }, {
     timestamps: true,
     versionKey: false

@@ -27,10 +27,10 @@ PaymentsController.getPaymentLink = async (req, res) => {
     });
 
     const body = {
-      payer_email: "test_user_49360370@testuser.com",
+      payer_email: "test_user_83219432@testuser.com",
       payer: {
         id: "test_user_49360370",
-        email: "test_user_49360370@testuser.com",
+        email: "test_user_83219432@testuser.com",
         name: "Test User",
       },
       items,
@@ -120,8 +120,8 @@ PaymentsController.paymentSuccess = async (req, res) => {
     await newPaymentInvoice.save();
     await newPurchase.save();
 
-    const oldSeller = await User.findOne({duvi: idseller}, {wallet: true});
-    await User.updateOne({duvi: idseller}, { 
+    const oldSeller = await User.findOne({networking: idseller}, {wallet: true});
+    await User.updateOne({networking: idseller}, { 
       wallet: { 
           onProperty: oldSeller.wallet.onProperty,
           onWait: oldSeller.wallet.onWait + totalPrice
