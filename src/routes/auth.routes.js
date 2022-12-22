@@ -19,4 +19,6 @@ router.post('/login', authController.signIn);
 
 router.post('/login/identifyUser', authController.identifyUserJSW);
 
+router.get('/roles', authController.getRoles);
+
 module.exports = router;

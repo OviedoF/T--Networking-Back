@@ -29,9 +29,9 @@ verifySignUp.checkDuplicate = (check, message) => {
 };
 
 verifySignUp.validatePassword = async (req, res, next) => {
-    const { password, validatePassword } = req.body;
+    const { password, confirmPassword } = req.body;
 
-    if(password !== validatePassword) {
+    if(password !== confirmPassword) {
         const { filename } = req.files[0];
         const pathImage = path.join(__dirname, '..', 'public', 'images', filename);
 
