@@ -6,6 +6,6 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
 
 router.put('/:id/orderManagement', isAdmin, OrdersControllers.orderManagement);
 
-router.delete('/:id/orderDelete', isAdmin, OrdersControllers.deleteOrder)
+//router.delete('/:id/orderDelete', isAdmin, OrdersControllers.deleteOrder)
 
 module.exports = router

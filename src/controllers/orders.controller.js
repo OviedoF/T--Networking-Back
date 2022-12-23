@@ -7,30 +7,33 @@ const OrdersControllers = {};
 
 OrdersControllers.orderManagement = async (req, res) => {
     const {id} = req.params;
+    const { state } = req.body;
     const orderFinded = await Purchase.findById(id, {state: true});
 
     if(!orderFinded) return res.status(404).send('La orden no existe.')
 
-    if(orderFinded.state === "In process") {
-        const orderFind = await Purchase.findByIdAndUpdate(id, {state: "Preparing order"})
+    const orderFind = await Purchase.findByIdAndUpdate(id, {state: state})
 
-        res.status(200).send('Pedido en preparacion')
-    }
-    if(orderFinded.state === "Preparing order") {
-        const orderFind = await Purchase.findByIdAndUpdate(id, {state: "Sent"})
+    if(state === "Enviado") {
 
         //Envio de email con codigo de seguimiento y notificacion de envio.
 
-        res.status(200).send('Pedido enviado.')
     }
-    if(orderFinded.state === "Sent") {
-        const orderFind = await Purchase.findByIdAndUpdate(id, {state: "Delivered"})
+    if(state === "Listo para retirar") {
 
-        res.status(200).send('Pedido entregado')
+        //Envio de email notificando que ya se puede retirar el pedido
+
     }
+    if(state === "Finalizado") {
+
+        //Envio de email para agradecimiento
+
+    }
+
+    res.status(200).send(`Estado del pedido: ${state}.`)
 }
 
-OrdersControllers.deleteOrder = async (req, res) => {
+/*OrdersControllers.deleteOrder = async (req, res) => {
     try {
         const {id} = req.params;
         const orderFinded = await Purchase.findById(id)
@@ -46,6 +49,6 @@ OrdersControllers.deleteOrder = async (req, res) => {
         console.log(error);
         return res.status(500).send(error);
     }
-}
+}*/
 
 module.exports = OrdersControllers
