@@ -102,7 +102,7 @@ PaymentsController.paymentSuccess = async (req, res) => {
     const newPaymentInvoice = new PaymentInvoice({seller: idseller, buyer: idbuyer, purchase: products});
 
     const newPurchase = new Purchase({
-      state: "in process",
+      state: "In process",
       buyer: idbuyer,
       seller: idseller,
       products,
