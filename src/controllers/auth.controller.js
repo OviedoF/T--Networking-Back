@@ -9,14 +9,17 @@ const authController = {};
 authController.signUp = async (req, res) => {
     try {
         const { filename } = req.files[0];
-        const { password } = req.body;
-        const userRole = await Role.findOne( { name: "user" } );
+        const { password, roles } = req.body;
+
+        const userRoles = await Role.find({name: {$in: roles}});
+
+        const arrayRoles = userRoles.map(el => el._id);
 
         const newUser = new User({
             ...req.body,
             userImage: `${process.env.ROOT_URL}/images/${filename}`,
             password: await User.encryptPassword(password),
-            roles: [ userRole._id ]
+            roles: arrayRoles
         });
 
         const savedUser = await newUser.save();
@@ -97,5 +100,15 @@ authController.identifyUserJSW = async (req, res) => {
         res.status(500).send(error);
     }
 }
+
+authController.getRoles = async (req, res) => {
+    try {
+        const roles = await Role.find();
+        res.status(200).send(roles);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+};
 
 module.exports = authController;
