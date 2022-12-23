@@ -1,6 +1,7 @@
 const path = require('path')
 const Subscription = require(path.join(__dirname, '..', 'models', 'subscription.model'))
 const deleteImage = require(path.join(__dirname, '..', 'libs', 'dirLibrary'));
+require("dotenv").config();
 
 const CreateSubscription = {};
 
@@ -67,6 +68,19 @@ CreateSubscription.getDelete = async (req,res) => {
         await Subscription.findByIdAndDelete(id);
 
         res.status(200).send("Membresia eliminada correctamente")
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send(error);
+    }
+}
+
+CreateSubscription.getSubscriptions = async (req, res) => {
+    try {
+        const subscriptionsFinded = await Subscription.find()
+
+        if(!subscriptionsFinded) return res.status(404).send("No hay membresias creadas.");
+
+        res.status(200).send(subscriptionsFinded)
     } catch (error) {
         console.log(error);
         return res.status(500).send(error);
