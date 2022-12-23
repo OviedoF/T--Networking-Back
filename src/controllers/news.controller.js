@@ -65,7 +65,15 @@ newsController.getNewsById = async (req, res) => {
 newsController.updateNews = async (req, res) => {
     try {
         const {id} = req.params;
-        const news = await News.findById
+        const news = await News.findByIdAndUpdate(id, req.body)
+
+        if(!news) return res.status(404).json({
+            message: 'Noticia no encontrada'
+        });
+
+        res.status(200).json({
+            message: 'Noticia actualizada correctamente'
+        });
     } catch (error) {
         res.status(500).json({
             message: error.message

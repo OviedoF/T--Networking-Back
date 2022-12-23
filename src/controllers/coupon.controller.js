@@ -88,4 +88,29 @@ couponController.deleteCoupon = async (req, res) => {
     }
 }
 
+couponController.applyCoupon = async (req, res) => {
+    try {
+        const {code, price} = req.body;
+
+        const coupon = await Coupon.findOne({code});
+
+        if(!coupon) return res.status(404).json({
+            message: 'Cupón no encontrado.'
+        });
+
+        const discount = price * (coupon.discountPercent / 100);
+        const total = price - discount;
+
+        res.status(200).json({
+            message: 'Cupón aplicado correctamente.',
+            total
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+}
+
 module.exports = couponController;

@@ -6,6 +6,7 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
 
 router.get('/', couponControllers.getCoupons);
 router.post('/', isAdmin, couponControllers.createCoupon);
+router.post('/apply', couponControllers.applyCoupon);
 
 router.put('/:id', isAdmin, couponControllers.editCoupon);
 router.delete('/:id', isAdmin, couponControllers.deleteCoupon);
