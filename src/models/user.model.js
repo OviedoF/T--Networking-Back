@@ -109,9 +109,7 @@ const userSchema = new Schema({
         type: String
     }],
 
-    imageQr: [{
-        type: String
-    }]
+    imageQr: String,
 
 }, {
     timestamps: true,
