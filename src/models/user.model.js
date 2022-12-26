@@ -107,6 +107,10 @@ const userSchema = new Schema({
 
     imageSubscription: [{
         type: String
+    }],
+
+    imageQr: [{
+        type: String
     }]
 
 }, {
