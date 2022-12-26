@@ -93,21 +93,21 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId
     }],
 
-    nameSubscription: [{
+    nameSubscription: {
         type: String
-    }],
+    },
 
-    daysSubscription: [{
+    daysSubscription: {
         type:Number
-    }],
+    },
 
-    description: [{
+    description: {
         type: String
-    }],
+    },
 
-    imageSubscription: [{
+    imageSubscription: {
         type: String
-    }],
+    },
 
     imageQr: String,
 

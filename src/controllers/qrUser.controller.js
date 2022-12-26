@@ -13,7 +13,7 @@ const createQR = async (id) => {
     });
 
     const QR = await qrCode.toFile(path.join('src', 'public', 'qr', `${id}.png`), 
-    'https://www.google.com', {color: {dark: '#1A120B', light: '#EEEEEE'}});
+    `${process.env.ROOT_URL}/api/user/${id}`, {color: {dark: '#1A120B', light: '#EEEEEE'}});
 }
 
 
@@ -47,6 +47,21 @@ qrController.getQr = async (req, res) => {
         res.status(200).send(userFinded.imageQr)
     } catch (error) {
         return res.status(500).send({message: 'Código QR no encontrado.'});
+    }
+}
+
+qrController.getDataQr = async (req, res) => {
+    try {
+        const {id} = req.params
+        const userFinded = await User.findById(id, {imageQr: true})
+
+        if(!userFinded) res.status(404).send("Usuario no encontrado.")
+
+        console.log(userFinded)
+
+        res.status(200).send(userFinded.imageQr)
+    } catch (error) {
+        return res.status(500).send({message: 'Id no encontrado.'});
     }
 }
 

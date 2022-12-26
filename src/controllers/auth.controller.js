@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const Role = require(path.join(__dirname, '..', 'models', 'role.model'));
 const User = require(path.join(__dirname, '..', 'models', 'user.model'));
+const News = require(path.join(__dirname, '..', 'models', 'news.model'));
+const Comments = require(path.join(__dirname, '..', 'models', 'comments.model'));
 
 const authController = {};
 
@@ -110,5 +112,34 @@ authController.getRoles = async (req, res) => {
         res.status(500).send(error);
     }
 };
+
+authController.deleteUsers = async (req, res) => {
+    try {
+
+        const {id} = req.params;
+        const userFinded = await User.findById(id)
+    
+        if(!userFinded) return res.status(404).send("No existe el usuario.");
+    
+        const newsFinded = await News.deleteMany({author: id})
+    
+        const commentsFinded = await Comments.deleteMany({author: id})
+    
+        const dir = path.join(__dirname, '..', 'public', 'qr', id);
+        deleteImage(dir);
+    
+        const imageUser = userFinded.userImage.split('/images/')[1];
+        const dirImageUser = path.join(__dirname, '..', 'public', 'images', imageUser);
+        deleteImage(dirImageUser)
+    
+        await User.findByIdAndDelete(id)
+
+        res.status(200).send("Usuario eliminado correctamente.");
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send(error);
+    }
+
+}
 
 module.exports = authController;

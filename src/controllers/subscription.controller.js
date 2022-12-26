@@ -74,12 +74,12 @@ PaymentSubscription.paymentSuccess = async (req, res) => {
 
         products.forEach(async (subscription) => {
             const dbSubscription = await Subscription.findById(subscription.idMembership, {subscriptions: true});
-            const nameSubsciption = await User.findById(idbuyer, {nameSubsciption: true})
+            const nameSubsciption = await User.findById(idbuyer, {nameSubscription: true})
 
-            if ( nameSubsciption.length === 0 ) {
+            /*if ( nameSubsciption.nameSubscription.length === 0 ) {
                 const newSubscriptions = dbSubscription + 1;
                 await Subscription.findByIdAndUpdate(subscription.idMembership, {subscriptions: newSubscriptions});
-            }
+            }*/
 
             await User.findByIdAndUpdate(idbuyer, {'$pull': { 'Subscription': subscription.idMembership }})
             await User.findByIdAndUpdate(idbuyer, {nameSubsciption: subscription.name})            
