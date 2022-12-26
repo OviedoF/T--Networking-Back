@@ -17,11 +17,11 @@ PaymentsController.getPaymentLink = async (req, res) => {
     const items = cart.map((el) => {
       return {
         id: el._id,
-        title: el.username,
+        title: el.name,
         description: el.description,
         quantity: el.quantity,
-        unit_price: el.price,
-        category_id: el.category,
+        unit_price: Math.ceil(el.price),
+        category_id: el.category._id,
         picture_url: el.principalImage,
       };
     });
@@ -55,7 +55,7 @@ PaymentsController.getPaymentLink = async (req, res) => {
     return res.status(201).send(payment.data);
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error);
+    return res.status(500).send(Object.keys(error));
   }
 };
 

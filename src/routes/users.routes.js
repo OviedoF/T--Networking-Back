@@ -4,6 +4,7 @@ const router = express.Router();
 const usersControllers = require(path.join(__dirname, '..', 'controllers', 'users.controller'));
 const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles'));
 
+router.get('/', isAdmin, usersControllers.getAllUsers);
 router.get('/:id', isAdmin, usersControllers.getUsers);
 
 router.put('/:id/updateUser', isAdmin, usersControllers.updateUsers);

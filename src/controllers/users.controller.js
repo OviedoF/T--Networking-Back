@@ -3,6 +3,19 @@ const User = require(path.join(__dirname, '..', 'models', 'user.model'));
 
 const usersControllers = {};
 
+usersControllers.getAllUsers = async (req, res) => {
+    try {
+        const usersFinded = await User.find().populate('roles');
+
+        res.status(200).send(usersFinded)
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            message: 'Error al obtener usuarios.'
+        })
+    }
+}
+
 usersControllers.getUsers = async (req, res) => {
     try {
         const usersFinded = await User.find();
