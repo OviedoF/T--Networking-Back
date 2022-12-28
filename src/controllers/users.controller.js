@@ -1,5 +1,6 @@
 const path = require("path")
 const User = require(path.join(__dirname, '..', 'models', 'user.model'));
+const deleteImage = require(path.join(__dirname, '..', 'libs', 'dirLibrary'));
 
 const usersControllers = {};
 
@@ -27,13 +28,13 @@ usersControllers.getUsers = async (req, res) => {
     }
 }
 
-usersControllers.updateUsers = async (req, res) => {
+usersControllers.updateUserAdmin = async (req, res) => {
     try {
 
         const {id} = req.params;
         const userFinded = await User.findById(id)
 
-        if(!userFinded) return res.status(404).send("Usuario no encontrado.")
+        if(!userFinded) return res.status(404).send("Admin no encontrado.")
 
         const userUpdated = await User.findByIdAndUpdate(id, req.body, {new: true})
 
@@ -43,13 +44,13 @@ usersControllers.updateUsers = async (req, res) => {
     }
 }
 
-usersControllers.updateUserImage = async (req, res) => {
+usersControllers.updateUserAdminImage = async (req, res) => {
     try {
         const {id} = req.params;
         const userFinded = await User.findById(id)
         const {filename} = req.files[0];
 
-        if(!userFinded) return res.status(404).send("Usuario no encontrado.");
+        if(!userFinded) return res.status(404).send("Admin no encontrado.");
 
         const oldImage = userFinded.userImage.split('/images/')[1];
         const oldImageRoute = path.join(__dirname, '..', 'public', 'images', oldImage);
@@ -60,7 +61,7 @@ usersControllers.updateUserImage = async (req, res) => {
             principalImage: `${process.env.ROOT_URL}/images/${filename}`
         })
 
-        res.status(200).send("Imágen actualizada correctamente.")
+        res.status(200).send("Imágen admin actualizada correctamente.")
     } catch (error) {
         console.log(error);
         return res.status(500).send(error);

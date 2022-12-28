@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const CreateSubscription = {};
 
-CreateSubscription.getCreate = async (req, res) => {
+CreateSubscription.createSubscription = async (req, res) => {
     try {
         const { filename } = req.files[0];
         
@@ -53,7 +53,7 @@ CreateSubscription.updatePrincipalImage = async (req, res) => {
     }
 }
 
-CreateSubscription.getDelete = async (req,res) => {
+CreateSubscription.deleteSubscription = async (req,res) => {
     try {
 
         const {id} = req.params;

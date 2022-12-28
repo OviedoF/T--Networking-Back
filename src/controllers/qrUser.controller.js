@@ -20,8 +20,9 @@ const createQR = async (id) => {
 qrController.createQr = async (req, res) => {
     try {
         const {id} = req.params;
-        const userFinded = await User.findById(id)
+        const userFinded = await User.findById(id, {imageQr: true})
 
+        if(userFinded.imageQr) return res.status(404).send("Este usuario ya tiene un QR.")
         if(!userFinded) return res.status(404).send("Id de usuario no se encuentra.")
 
         const userData = await User.findById(id, {username: true, nameSubscription: true, daysSubscription: true})

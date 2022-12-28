@@ -13,6 +13,7 @@ router.post('/create', isAdmin,productsControllers.createProduct);
 router.post('/:id/addImage', isAdmin,productsControllers.pushImage);
 
 router.put('/:id/principalImage', isAdmin,productsControllers.updatePrincipalImage);
+router.put('/:id/updateProduct', isAdmin, productsControllers.updateProduct);
 
 router.delete('/:id/:filename', isAdmin, productsControllers.removeImage);
 router.delete('/:id', isAdmin,productsControllers.deleteProduct);

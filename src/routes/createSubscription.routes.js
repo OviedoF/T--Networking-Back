@@ -6,10 +6,10 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
 
 router.get('/', CreateSubscription.getSubscriptions)
 
-router.post('/create', isAdmin, CreateSubscription.getCreate)
+router.post('/create', isAdmin, CreateSubscription.createSubscription)
 
 router.put('/:id/principalImage', isAdmin, CreateSubscription.updatePrincipalImage)
 
-router.delete('/:id', isAdmin,  CreateSubscription.getDelete)
+router.delete('/:id', isAdmin,  CreateSubscription.deleteSubscription)
 
 module.exports = router

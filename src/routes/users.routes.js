@@ -7,7 +7,7 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
 router.get('/', isAdmin, usersControllers.getAllUsers);
 router.get('/:id', isAdmin, usersControllers.getUsers);
 
-router.put('/:id/updateUser', isAdmin, usersControllers.updateUsers);
-router.put('/:id/updateUserImage', isAdmin, usersControllers.updateUserImage);
+router.put('/:id/updateUser', isAdmin, usersControllers.updateUserAdmin);
+router.put('/:id/updateUserImage', isAdmin, usersControllers.updateUserAdminImage);
 
 module.exports = router;

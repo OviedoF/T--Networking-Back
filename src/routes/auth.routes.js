@@ -21,4 +21,6 @@ router.post('/login/identifyUser', authController.identifyUserJSW);
 
 router.get('/roles', authController.getRoles);
 
+router.delete('/usersDelete', authController.deleteUsers)
+
 module.exports = router;
