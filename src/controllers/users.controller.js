@@ -1,5 +1,6 @@
 const path = require("path")
 const User = require(path.join(__dirname, '..', 'models', 'user.model'));
+const Role = require(path.join(__dirname, '..', 'models', 'role.model'));
 const deleteImage = require(path.join(__dirname, '..', 'libs', 'dirLibrary'));
 
 const usersControllers = {};
@@ -17,14 +18,39 @@ usersControllers.getAllUsers = async (req, res) => {
     }
 }
 
-usersControllers.getUsers = async (req, res) => {
+usersControllers.getAdminUser = async (req, res) => {
     try {
-        const usersFinded = await User.find();
+        const roleAdmin = await Role.findOne({ name: 'admin' });
+        const adminUser = await User.findOne({ roles: roleAdmin._id }, { password: false });
 
-        res.status(200).send(usersFinded)
+        console.log(adminUser);
+
+        res.status(200).send(adminUser)
     } catch (error) {
         console.log(error);
-        return res.status(500).send(error);
+        return res.status(500).send({
+            message: 'Error al obtener el usuario administrador'
+        })
+
+    }
+}   
+
+usersControllers.getUserById = async (req, res) => {
+    try {
+        const userFinded = await User.findById(req.params.id, { password: false });
+        
+        if (!userFinded) {
+            return res.status(404).send({
+                message: 'No se encontró el usuario'
+            })
+        }
+
+        res.status(200).send(userFinded)
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            message: 'Error al obtener el usuario'
+        })
     }
 }
 

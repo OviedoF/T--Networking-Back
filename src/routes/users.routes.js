@@ -5,7 +5,9 @@ const usersControllers = require(path.join(__dirname, '..', 'controllers', 'user
 const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles'));
 
 router.get('/', isAdmin, usersControllers.getAllUsers);
-router.get('/:id', isAdmin, usersControllers.getUsers);
+router.get('/admin', isAdmin, usersControllers.getAdminUser);
+router.get('/:id', usersControllers.getUserById)
+
 
 router.put('/:id/updateUser', isAdmin, usersControllers.updateUserAdmin);
 router.put('/:id/updateUserImage', isAdmin, usersControllers.updateUserAdminImage);

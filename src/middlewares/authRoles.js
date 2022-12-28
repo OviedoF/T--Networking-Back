@@ -27,6 +27,9 @@ const verifyToken = async (req, res, next) => {
 const isAdmin = async (req, res, next) => {
     try {
         const user = await User.findById(req.headers.userid);
+
+        if(!user) return res.status(404).json({message: "No se reconoce el usuario, por favor logeate."});
+
         const roles = await Role.find({_id: {$in: user.roles}});
 
         for (let i = 0; i < roles.length; i++) {
@@ -38,7 +41,7 @@ const isAdmin = async (req, res, next) => {
 
         return res.status(403).json({message: "Se requiere rol de administrador"})
     } catch (error) {
-        if(req.files[0]){
+        if(req.files){
             const {filename} = req.files[0];
             const dirname = path.join(__dirname, '..', 'public', 'images', filename);
             deleteImage(dirname);
