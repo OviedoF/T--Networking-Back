@@ -6,6 +6,4 @@ const qrController = require(path.join(__dirname, '..', 'controllers', 'qrUser.c
 router.get('/', qrController.getQr)
 router.get('/user/:id', qrController.getDataQr)
 
-router.post('/:id/createQr', qrController.createQr)
-
 module.exports = router;

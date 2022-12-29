@@ -11,5 +11,6 @@ router.get('/:id', usersControllers.getUserById)
 
 router.put('/:id/updateUser', isAdmin, usersControllers.updateUserAdmin);
 router.put('/:id/updateUserImage', isAdmin, usersControllers.updateUserAdminImage);
+router.put('/:id/updateUserSocial', usersControllers.updateSocialMedia);
 
 module.exports = router;

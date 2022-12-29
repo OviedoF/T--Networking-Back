@@ -6,38 +6,6 @@ require('dotenv').config()
 
 const qrController = {}
 
-const createQR = async (id) => {
-    fs.writeFile(path.join('src', 'public', 'qr', `${id}.png`), 'Learn Node FS module', function (err) {
-        if (err) throw err;
-        console.log('File is created successfully.');
-    });
-
-    const QR = await qrCode.toFile(path.join('src', 'public', 'qr', `${id}.png`), 
-    `${process.env.ROOT_URL}/api/user/${id}`, {color: {dark: '#1A120B', light: '#EEEEEE'}});
-}
-
-
-qrController.createQr = async (req, res) => {
-    try {
-        const {id} = req.params;
-        const userFinded = await User.findById(id, {imageQr: true})
-
-        if(userFinded.imageQr) return res.status(404).send("Este usuario ya tiene un QR.")
-        if(!userFinded) return res.status(404).send("Id de usuario no se encuentra.")
-
-        const userData = await User.findById(id, {username: true, nameSubscription: true, daysSubscription: true})
-
-        createQR(userFinded._id)
-
-        await User.findByIdAndUpdate(id, {imageQr: `${process.env.ROOT_URL}/qr/${userFinded._id}.png`})
-
-        res.status(200).send({message: 'Código QR generado.'})
-    } catch (error) {
-        console.log(error)
-        return res.status(500).send({message: 'Código QR no generado.'});
-    }
-}
-
 qrController.getQr = async (req, res) => {
     try {
         const {id} = req.params

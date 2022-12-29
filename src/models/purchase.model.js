@@ -21,7 +21,15 @@ const purchaseSchema = new Schema({
   },
   images: [String],
   products: Array,
-  type: String
+  type: String,
+  shipping: Boolean,
+  shippingCode: String,
+  shippingDate: Date,
+  shippingCost: Number,
+  shippingEntity: String,
+  shippingAddress: String,
+  shippingCity: String,
+  shippingState: String,
 }, {
     timestamps: true,
     timeseries: true

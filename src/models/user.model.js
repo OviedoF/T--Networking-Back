@@ -40,11 +40,6 @@ const userSchema = new Schema({
         ref: 'Role',
         type: Schema.Types.ObjectId
     }],
-
-    networking: {
-        ref: 'Networking',
-        type: Schema.Types.ObjectId
-    },
     
     wishList: [{
         ref: "Product",
@@ -84,8 +79,7 @@ const userSchema = new Schema({
 
     socialMedia: [{
         name: String,
-        link: String,
-        user: String
+        link: String
     }],
 
     subscription: [{

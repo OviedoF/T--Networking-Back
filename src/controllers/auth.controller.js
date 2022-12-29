@@ -1,12 +1,25 @@
 const path = require('path');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const qrCode = require('qrcode')
+const { v4 } = require('uuid')
+const fs = require('fs-extra');
 const Role = require(path.join(__dirname, '..', 'models', 'role.model'));
 const User = require(path.join(__dirname, '..', 'models', 'user.model'));
 const News = require(path.join(__dirname, '..', 'models', 'news.model'));
 const Comments = require(path.join(__dirname, '..', 'models', 'comments.model'));
 
 const authController = {};
+
+const createQR = async (id) => {
+    fs.writeFile(path.join('src', 'public', 'qr', `${id}.png`), 'Learn Node FS module', function (err) {
+        if (err) throw err;
+        console.log('File is created successfully.');
+    });
+
+    const QR = await qrCode.toFile(path.join('src', 'public', 'qr', `${id}.png`), 
+    `${process.env.ROOT_URL}/api/user/${id}`, {color: {dark: '#1A120B', light: '#EEEEEE'}});
+}
 
 authController.signUp = async (req, res) => {
     try {
@@ -22,11 +35,15 @@ authController.signUp = async (req, res) => {
             arrayRoles = [userRoles._id];
         }
 
-        const newUser = new User({
+        const qrId = v4();
+        createQR(qrId);
+
+        const newUser = await new User({
             ...req.body,
             userImage: `${process.env.ROOT_URL}/images/${filename}`,
             password: await User.encryptPassword(password),
-            roles: arrayRoles
+            roles: arrayRoles,
+            imageQr: `${process.env.ROOT_URL}/qr/${qrId}.png`
         });
 
         const savedUser = await newUser.save();
@@ -84,6 +101,7 @@ authController.signIn = async (req, res) => {
 authController.identifyUserJSW = async (req, res) => {
     try {
         const token = req.body.token;
+        console.log(token)
 
         const decoded = jwt.verify(token, 'FKDOCKODfkpodKCDfkD0F9Dkc90d');
 

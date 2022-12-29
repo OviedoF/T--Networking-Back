@@ -94,4 +94,24 @@ usersControllers.updateUserAdminImage = async (req, res) => {
     }
 }
 
+usersControllers.updateSocialMedia = async (req, res) => {
+    try {
+        console.log('conchetumare')
+        const {id} = req.params;
+        const userFinded = await User.findById(id)
+
+        if(!userFinded) return res.status(404).send("Usuario no encontrado.")
+
+        const userUpdated = await User.findByIdAndUpdate(id, {
+            socialMedia: req.body.socialMedia
+        }, {new: true});
+
+        console.log(userUpdated);
+
+        res.status(200).send(userUpdated)
+    } catch (error) {
+        return res.status(500).send({message: 'Usuario no modificado.'});
+    }
+}
+
 module.exports = usersControllers;
