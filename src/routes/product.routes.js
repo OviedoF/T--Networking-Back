@@ -106,16 +106,163 @@ router.get('/', productsControllers.getProducts);
  *              description: category not found
  */
 router.get('/category/:category', productsControllers.getProductsByCategory);
+
+/**
+ * @openapi
+ * /api/product/{id}:
+ *  get:
+ *      summary: return a product
+ *      tags: [Products]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: the product id  
+ *      responses:
+ *          200:
+ *              description: Producto por id
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          items:
+ *                              $ref: '#/components/schemas/Products'
+ *          404:
+ *              description: product not found
+ */
+
 router.get('/:id', productsControllers.getProductById);
 
 router.post('/filters', productsControllers.filterAndGetProducts);
+
+/**
+ * @openapi
+ * /api/product/create:
+ *  post:
+ *      summary: create a new product
+ *      tags: [Products]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/Products'
+ *      responses:
+ *          200:
+ *              description: new product created
+ */
+
 router.post('/create', isAdmin, productsControllers.createProduct);
+
+/**
+ * @openapi
+ * /api/product/{id}/addImage:
+ *  post:
+ *      summary: push image product
+ *      tags: [Products]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          galeryImages:
+ *                              type: string
+ *                              description: image product
+ *      responses:
+ *          200:
+ *              description: push image product
+ */
+
 router.post('/:id/addImage', isAdmin, productsControllers.pushImage);
 
+/**
+ * @openapi
+ * /api/product/{id}/principalImage:
+ *  put:
+ *      summary: update a product
+ *      tags: [Products]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: the product id
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          principalImage:
+ *                              type: string
+ *                              description: image principal product 
+ *      responses:
+ *          200:
+ *              description: product update
+ *          404:
+ *              description: product not found
+ */
+
 router.put('/:id/principalImage', isAdmin, productsControllers.updatePrincipalImage);
+
+/**
+ * @openapi
+ * /api/product/{id}/principalImage:
+ *  put:
+ *      summary: update a product
+ *      tags: [Products]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: the product id
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/Products' 
+ *      responses:
+ *          200:
+ *              description: product update
+ *          404:
+ *              description: product not found
+ */
+
 router.put('/:id/updateProduct', isAdmin, productsControllers.updateProduct);
 
 router.delete('/:id/:filename', isAdmin, productsControllers.removeImage);
+
+/**
+ * @openapi
+ * /api/product/{id}:
+ *  delete:
+ *      summary: delete a product
+ *      tags: [Products]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: the product id  
+ *      responses:
+ *          200:
+ *              description: product delete
+ *          404:
+ *              description: product not found
+ */
+
 router.delete('/:id', isAdmin, productsControllers.deleteProduct);
 
 module.exports = router;

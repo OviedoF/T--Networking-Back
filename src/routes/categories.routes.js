@@ -33,6 +33,26 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
 /**
  * @openapi
  * /api/categories/:
+ *  post:
+ *      summary: create a new category
+ *      tags: [Categories]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/Categories'
+ *      responses:
+ *          200:
+ *              description: new category created,
+ */
+
+router.post('/', isAdmin, categoriesControllers.createCategory);
+
+/**
+ * @openapi
+ * /api/categories/:
  *  get:
  *      summary: return all categories
  *      tags: [Categories]
@@ -73,11 +93,57 @@ router.get('/', categoriesControllers.getCategories);
  *          404:
  *              description: category not found
  */
+
 router.get('/:id', categoriesControllers.getCategoryById);
 
-router.post('/', isAdmin, categoriesControllers.createCategory);
+/**
+ * @openapi
+ * /api/categories/update/{id}:
+ *  put:
+ *      summary: update a category
+ *      tags: [Categories]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: the category id
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/Categories'  
+ *      responses:
+ *          200:
+ *              description: category update
+ *          404:
+ *              description: category not found
+ */
 
 router.put('/update/:id', isAdmin, categoriesControllers.updateCategory);
+
+/**
+ * @openapi
+ * /api/categories/delete/{id}:
+ *  delete:
+ *      summary: delete a category
+ *      tags: [Categories]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: the category id  
+ *      responses:
+ *          200:
+ *              description: category delete
+ *          404:
+ *              description: category not found
+ */
 
 router.delete('/delete/:id', isAdmin, categoriesControllers.deleteCategory);
 

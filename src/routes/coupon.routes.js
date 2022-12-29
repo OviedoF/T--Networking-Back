@@ -34,7 +34,7 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
  * @openapi
  * /api/coupon/:
  *  get:
- *      summary: return all coupons
+ *      summary: return all coupons    
  *      tags: [Coupons]
  *      responses:
  *          200:
@@ -48,10 +48,76 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
  */
 
 router.get('/', couponControllers.getCoupons);
+
+/**
+ * @openapi
+ * /api/coupon/:
+ *  post:
+ *      summary: create a new coupon
+ *      tags: [Coupons]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/Coupons'
+ *      responses:
+ *          200:
+ *              description: new coupon created,
+ */
 router.post('/', isAdmin, couponControllers.createCoupon);
 router.post('/apply', couponControllers.applyCoupon);
 
+/**
+ * @openapi
+ * /api/coupon/{id}:
+ *  put:
+ *      summary: update a coupon
+ *      tags: [Coupons]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: the coupon id
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/Coupons'  
+ *      responses:
+ *          200:
+ *              description: coupons update
+ *          404:
+ *              description: coupons not found
+ */
+
 router.put('/:id', isAdmin, couponControllers.editCoupon);
+
+/**
+ * @openapi
+ * /api/coupon/{id}:
+ *  delete:
+ *      summary: delete a category
+ *      tags: [Coupons]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: the coupon id  
+ *      responses:
+ *          200:
+ *              description: coupon delete
+ *          404:
+ *              description: coupon not found
+ */
+
 router.delete('/:id', isAdmin, couponControllers.deleteCoupon);
 
 module.exports = router;

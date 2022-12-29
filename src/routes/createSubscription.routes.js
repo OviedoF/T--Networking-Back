@@ -50,6 +50,24 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
  *              subscriptions: 0
  */
 
+/**
+ * @openapi
+ * /api/createSubscription/create:
+ *  post:
+ *      summary: create a new subscription
+ *      tags: [Subscription]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/Subscription'
+ *      responses:
+ *          200:
+ *              description: new subscription created,
+ */
+
 router.post('/create', isAdmin, CreateSubscription.createSubscription)
 
 /**
@@ -60,7 +78,7 @@ router.post('/create', isAdmin, CreateSubscription.createSubscription)
  *          tags: [Subscription]
  *          responses:
  *              200:
- *                  description: Todos los usuarios
+ *                  description: Todas las suscripciones
  *                  content: 
  *                      application/json:
  *                          schema:
@@ -71,7 +89,54 @@ router.post('/create', isAdmin, CreateSubscription.createSubscription)
 
 router.get('/', CreateSubscription.getSubscriptions)
 
+/**
+ * @openapi
+ * /api/createSubscription/{id}/principalImage:
+ *  put:
+ *      summary: update a subscription
+ *      tags: [Subscription]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: the subscription id
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/Subscription'  
+ *      responses:
+ *          200:
+ *              description: subscription update
+ *          404:
+ *              description: subscription not found
+ */
+
 router.put('/:id/principalImage', isAdmin, CreateSubscription.updatePrincipalImage)
+
+/**
+ * @openapi
+ * /api/createSubscription/{id}:
+ *  delete:
+ *      summary: delete a subscription
+ *      tags: [Subscription]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: the subscription id  
+ *      responses:
+ *          200:
+ *              description: subscription delete
+ *          404:
+ *              description: subscription not found
+ */
 
 router.delete('/:id', isAdmin,CreateSubscription.deleteSubscription)
 

@@ -51,6 +51,25 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
  *                                  $ref: '#/components/schemas/News'
  */
 router.get('/', newsControllers.getNews);
+
+/**
+ * @openapi
+ * /api/news/:
+ *  post:
+ *      summary: create a news
+ *      tags: [News]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/News'
+ *      responses:
+ *          200:
+ *              description: news created,
+ */
+
 router.post('/', isAdmin, newsControllers.createNews);
 
 /**
@@ -81,7 +100,55 @@ router.post('/', isAdmin, newsControllers.createNews);
 
 router.get('/:id', newsControllers.getNewsById);
 
+/**
+ * @openapi
+ * /api/news/{id}:
+ *  put:
+ *      summary: update a news
+ *      tags: [News]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: the news id
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/News'  
+ *      responses:
+ *          200:
+ *              description: news update
+ *          404:
+ *              description: news not found
+ */
+
 router.put('/:id', isAdmin, newsControllers.updateNews);
+
+/**
+ * @openapi
+ * /api/news/{id}:
+ *  delete:
+ *      summary: delete a news
+ *      tags: [News]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: the news id  
+ *      responses:
+ *          200:
+ *              description: news delete
+ *          404:
+ *              description: news not found
+ */
+
 router.delete('/:id', isAdmin, newsControllers.deleteNews);
 
 module.exports = router;
