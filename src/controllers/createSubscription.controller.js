@@ -8,13 +8,13 @@ const CreateSubscription = {};
 CreateSubscription.createSubscription = async (req, res) => {
     try {
         const { filename } = req.files[0];
-        
-        const newSubscription = new Subscription({
-            ...req.body,
-            principalImage: `${process.env.ROOT_URL}/images/${filename}`
-        })
 
-        const savedSubscription = await newSubscription.save();
+            const newSubscription = new Subscription({
+                ...req.body,
+                principalImage: `${process.env.ROOT_URL}/images/${filename}`
+            })
+            const savedSubscription = await newSubscription.save();
+        
 
         res.status(201).send({
             message: 'Membresia creada correctamente!',
@@ -23,9 +23,9 @@ CreateSubscription.createSubscription = async (req, res) => {
             }
         })
     } catch (error) {
-    console.log(error);
-    return res.status(500).send(error);
-  }
+        console.log(error);
+        return res.status(500).send(error);
+    }
 }
 
 CreateSubscription.updatePrincipalImage = async (req, res) => {
