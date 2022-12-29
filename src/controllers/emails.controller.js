@@ -50,4 +50,6 @@ emailsController.registrySuccess = async (req, res) => {
     }
 };
 
+
+
 module.exports = emailsController;

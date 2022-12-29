@@ -12,10 +12,15 @@ authController.signUp = async (req, res) => {
     try {
         const { filename } = req.files[0];
         const { password, roles } = req.body;
+        let arrayRoles;
 
-        const userRoles = await Role.find({name: {$in: roles}});
-
-        const arrayRoles = userRoles.map(el => el._id);
+        if(roles) {
+            const userRoles = await Role.find({name: {$in: roles}});
+            arrayRoles = userRoles.map(el => el._id);
+        } else {
+            const userRoles = await Role.findOne({name: 'user'});
+            arrayRoles = [userRoles._id];
+        }
 
         const newUser = new User({
             ...req.body,
@@ -35,7 +40,8 @@ authController.signUp = async (req, res) => {
             message: 'Usuario registrado correctamente!',
             userData: {
                 name: req.body.name,
-                username: req.body.username
+                username: req.body.username,
+                email: req.body.email,
             }
         });
         

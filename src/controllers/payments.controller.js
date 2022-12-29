@@ -33,11 +33,12 @@ PaymentsController.getPaymentLink = async (req, res) => {
         email: "test_user_49360370@testuser.com",
         name: "Test User",
       },
+      
       items,
       back_urls: {
         failure: "/failure",
         pending: "/pending",
-        success: "/success",
+        success: "https://networking-api.eichechile.com/api/payments/success",
       },
       auto_return: "approved",
       statement_descriptor: "Networking", //Descripcion en Resumen de Tarjeta
@@ -61,74 +62,21 @@ PaymentsController.getPaymentLink = async (req, res) => {
 
 PaymentsController.paymentSuccess = async (req, res) => {
   /* 
-    - Notificar al vendedor
-    - Crear nuevo documento de compra con estado "in process" #
     - Crear nuevo documento "paymentInvoice" con la información a renderizar en el front #
     - Agregar nueva propiedad "paymentInvoice" con el documento nuevo (ref) #
-    - Agregar al historial y seguimiento de vendedor y comprador #
-    - Agregar monto a wallet vendedor #
-    - Generar factura (en html) y guardar su enlace en el documento de la compra #
-    - Crear "seguimientos" en el documento del usuario y añadir la compra (ref) # 
+    - Agregar al historial y seguimiento de comprador #
     - Mandar por email la confirmación y la factura 
     - Quitar producto del carrito del comprador #
     - Quitar cantidad de stock al producto #
   */
+
   try {
-    const { idbuyer, idseller } = req.headers;
-    const { cart, totalPrice } = req.body;
-    const images = cart.map((el) => el.principalImage);
-
-    const products = cart.map((el) => {
-      return {
-        name: el.username,
-        quantity: el.quantity,
-        price: el.price,
-        size: el.sizeSelected,
-        idProduct: el._id 
-      };
+    res.status(200).send({
+      message: "Pago exitoso",
+      params: req.params,
+      body: req.body,
+      headers: req.headers,
     });
-
-    products.forEach(async (product) => {
-      const dbProduct = await Product.findById(product.idProduct, {stock: true});
-
-      if(dbProduct.stock <= 0) return res.status(401).send('Producto agotado.');
-
-      const newStock = dbProduct.stock - product.quantity;
-
-      await Product.findByIdAndUpdate(product.idProduct, {stock: newStock});
-      await User.findByIdAndUpdate(idbuyer, { '$pull': { 'shoppingCart': product.idProduct } });
-    });
-
-    const newPaymentInvoice = new PaymentInvoice({seller: idseller, buyer: idbuyer, purchase: products});
-
-    const newPurchase = new Purchase({
-      state: "in process",
-      buyer: idbuyer,
-      seller: idseller,
-      products,
-      images,
-      invoice: newPaymentInvoice._id,
-      PaymentInvoice: newPaymentInvoice._id
-    });
-
-    await User.findByIdAndUpdate(idbuyer, { 
-      '$addToSet': { 'shoppingHistory': newPurchase._id }},
-    {new: true});
-
-    await Networking.findByIdAndUpdate(idseller, { '$addToSet': { 'salesHistory': newPurchase._id } }, {new: true});
-
-    await newPaymentInvoice.save();
-    await newPurchase.save();
-
-    const oldSeller = await User.findOne({networking: idseller}, {wallet: true});
-    await User.updateOne({networking: idseller}, { 
-      wallet: { 
-          onProperty: oldSeller.wallet.onProperty,
-          onWait: oldSeller.wallet.onWait + totalPrice
-      }
-    });
-
-    res.status(200).send('Compra realizada con éxito');
   } catch (error) {
     res.status(500).send(error);
     console.log(error);
