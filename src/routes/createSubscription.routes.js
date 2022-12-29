@@ -5,7 +5,7 @@ const CreateSubscription = require(path.join(__dirname, '..', 'controllers', 'cr
 const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles'))
 
 /**
- * @swagger
+ * @openapi
  * components:
  *  schemas:
  *      Subscription:
@@ -50,78 +50,29 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
  *              subscriptions: 0
  */
 
+router.post('/create', isAdmin, CreateSubscription.createSubscription)
+
 /**
- *  @swagger
- *  /: 
+ *  @openapi
+ *  /api/createSubscription/: 
  *      get:
- *          summary: all subscriptions
+ *          summary: return all subscriptions
  *          tags: [Subscription]
- *
- *      responses:
- *          200:
- *              description: Todos los usuarios
- *              content: 
- *                  application/json:
- *                      schema:
- *                          type: array
- *                          items: 
- *                              $ref: '#/components/schemas/Subscription'
- *          500:
- *              description: Peticion no realizada.
+ *          responses:
+ *              200:
+ *                  description: Todos los usuarios
+ *                  content: 
+ *                      application/json:
+ *                          schema:
+ *                              type: array
+ *                              items: 
+ *                                  $ref: '#/components/schemas/Subscription'
  */
 
 router.get('/', CreateSubscription.getSubscriptions)
 
-/**
- *  @openapi
- *  /api/createSubscription/create: 
- *      post:
- *          summary: create a new subscription
- *          tags: [Subscription]
- *          requestBody:
- *              required: true
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          $ref: '#/components/schemas/Subscription'
- *      responses:
- *          201:
- *              description: Membresia creada correctamente!
- *          500:
- *              description: Membresia no creada.
- */
-
-router.post('/create', CreateSubscription.createSubscription)
-
 router.put('/:id/principalImage', isAdmin, CreateSubscription.updatePrincipalImage)
 
-/**
- *  @swagger
- *  /{id}: 
- *      delete:
- *          summary: all subscriptions
- *          tags: [Subscription]
- *          parameters:
- *              - in: path
- *                name: id
- *                schema:
- *                  type: string
- *                required: true
- *                description: Id de suscripcion
- *      responses:
- *          200:
- *              description: Eliminar usuario
- *              content: 
- *                  application/json:
- *                      schema:
- *                          type: array
- *                          items: 
- *                              $ref: '#/components/schemas/Subscription'
- *          500:
- *              description: Peticion no realizada.
- */
-
-router.delete('/:id', isAdmin,  CreateSubscription.deleteSubscription)
+router.delete('/:id', isAdmin,CreateSubscription.deleteSubscription)
 
 module.exports = router
