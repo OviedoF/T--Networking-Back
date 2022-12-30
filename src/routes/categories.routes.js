@@ -66,6 +66,7 @@ router.post('/', isAdmin, categoriesControllers.createCategory);
  *                          items:
  *                              $ref: '#/components/schemas/Categories'
  */
+
 router.get('/', categoriesControllers.getCategories);
 
 /**

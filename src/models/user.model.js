@@ -17,7 +17,7 @@ const userSchema = new Schema({
         required: true
     },
 
-    cellphone: String,
+    cellphone: Number,
 
     email: {
         type: String,
