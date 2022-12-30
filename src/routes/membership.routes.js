@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const router = express.Router();
-const CreateSubscription = require(path.join(__dirname, '..', 'controllers', 'createSubscription.controller'));
+const MembershipController = require(path.join(__dirname, '..', 'controllers', 'membership.controller'));
 const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles'))
 
 /**
@@ -50,7 +50,7 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
  *              subscriptions: 0
  */
 
-router.post('/create', isAdmin, CreateSubscription.createSubscription)
+router.post('/create', isAdmin, MembershipController.createSubscription)
 
 /**
  *  @openapi
@@ -69,10 +69,10 @@ router.post('/create', isAdmin, CreateSubscription.createSubscription)
  *                                  $ref: '#/components/schemas/Subscription'
  */
 
-router.get('/', CreateSubscription.getSubscriptions)
+router.get('/', MembershipController.getSubscriptions)
 
-router.put('/:id/principalImage', isAdmin, CreateSubscription.updatePrincipalImage)
+router.put('/:id/principalImage', isAdmin, MembershipController.updatePrincipalImage)
 
-router.delete('/:id', isAdmin,CreateSubscription.deleteSubscription)
+router.delete('/:id', isAdmin,MembershipController.deleteSubscription)
 
 module.exports = router
