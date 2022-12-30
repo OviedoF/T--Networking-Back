@@ -6,6 +6,7 @@ const fs = require('fs-extra');
 require('dotenv').config();
 const createInitialRoles = require(path.join(__dirname, 'seeds', 'initialRoles'));
 const createInitialAdmin = require(path.join(__dirname, 'seeds', 'initialAdmin'));
+const createInitialMemberships = require(path.join(__dirname, 'seeds', 'memberships.seed'));
 
 // initialize
 require(path.join(__dirname, 'database.js'));
@@ -30,6 +31,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(require(path.join(__dirname, 'config', 'multer.config')));
 
 // configs
+
+createInitialMemberships();
 createInitialRoles();
 createInitialAdmin();
 

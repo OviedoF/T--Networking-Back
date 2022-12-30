@@ -12,7 +12,7 @@ const createInitialRoles = async () => {
                 }).save(),
             
                 new Role({
-                    name: "duvi"
+                    name: "moderator"
                 }).save(),
             
                 new Role({

@@ -25,10 +25,13 @@ const membershipSchema = new Schema({
         type: Number
     },
 
-    principalImage: {
+    image: {
         type: String,
         required: true
     }
+}, {
+    timestamps: true,
+    versionKey: false
 })
 
 module.exports = model('Membership', membershipSchema)

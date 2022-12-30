@@ -6,8 +6,18 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+
+    backgroundImage: {
+        type: String,
+        required: true 
+    },
     
-    name: {
+    firstName: {
+        type: String,
+        required: true
+    },
+
+    lastName: {
         type: String,
         required: true
     },
@@ -40,14 +50,14 @@ const userSchema = new Schema({
         ref: 'Role',
         type: Schema.Types.ObjectId
     }],
-    
-    wishList: [{
+
+    shoppingCart: [{
         ref: "Product",
         type: Schema.Types.ObjectId
     }],
 
-    shoppingCart: [{
-        ref: "Product",
+    membershipsCart: [{
+        ref: "Membership",
         type: Schema.Types.ObjectId
     }],
 
@@ -55,11 +65,6 @@ const userSchema = new Schema({
         ref: "Purchase",
         type: Schema.Types.ObjectId
     }],
-
-    wallet: {
-        onProperty: Number,
-        onWait: Number
-    },
 
     notifications: [{
         subject: String,
@@ -79,31 +84,70 @@ const userSchema = new Schema({
 
     socialMedia: [{
         name: String,
-        link: String
+        link: String,
+        color: String
     }],
 
-    subscription: [{
-        ref: "Subscription",
+    membership: [{
+        ref: "Membership",
         type: Schema.Types.ObjectId
     }],
 
-    nameSubscription: {
+    daysMembership: {
+        type:Number,
+        required: true
+    },
+
+    imageQr: {
+        type: String,
+        required: true
+    },
+
+    job: {
+        type: String,
+        required: true
+    },
+
+    organization: {
+        type: String,
+        required: true
+    },
+
+    location: {
+        country: String,
+        city: String,
+        address: String
+    },
+
+    biography: {
+        type: String,
+        required: true
+    },
+
+    vcard: {
         type: String
     },
 
-    daysSubscription: {
-        type:Number
-    },
+    contactForm: {
+        title: String,
+        
+        inputs: [{
+            name: String,
+            type: String,
+            placeholder: String,
+            required: Boolean
+        }],
 
-    description: {
-        type: String
-    },
+        button: {
+            text: String,
+            color: String
+        },
 
-    imageSubscription: {
-        type: String
-    },
+        disclaimer: {
+            text: String,
+        }
+    }
 
-    imageQr: String,
 
 }, {
     timestamps: true,
