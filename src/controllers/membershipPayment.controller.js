@@ -2,11 +2,11 @@ require("dotenv").config();
 const path = require("path")
 const axios = require
 const User = require(path.join(__dirname, '..', 'models', 'user.model'));
-const Subscription = require(path.join( __dirname, "..", "models", "subscription.model.js" ));
+const Subscription = require(path.join( __dirname, "..", "models", "membership.model.js" ));
 
-const PaymentSubscription = {}
+const MembershipPayment = {}
 
-PaymentSubscription.getPaymentLink = async (req, res) => {
+MembershipPayment.getPaymentLink = async (req, res) => {
     try {
         const url = "https://api.mercadopago.com/preapproval";
         const { membership } = req.body;
@@ -56,7 +56,7 @@ PaymentSubscription.getPaymentLink = async (req, res) => {
     }
 }
 
-PaymentSubscription.paymentSuccess = async (req, res) => {
+MembershipPayment.paymentSuccess = async (req, res) => {
     try {
         const { idbuyer } = req.headers;
         const { membership } = req.body;
@@ -95,7 +95,7 @@ PaymentSubscription.paymentSuccess = async (req, res) => {
   }
 }
 
-/*PaymentSubscription.expirationMembership = async (req, res) => {
+/*MembershipPayment.expirationMembership = async (req, res) => {
     try {
 
     } catch (error) {
@@ -104,4 +104,4 @@ PaymentSubscription.paymentSuccess = async (req, res) => {
   }
 }*/
 
-module.exports = PaymentSubscription;
+module.exports = MembershipPayment;

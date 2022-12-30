@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const router = express.Router();
-const CreateSubscription = require(path.join(__dirname, '..', 'controllers', 'createSubscription.controller'));
+const MembershipController = require(path.join(__dirname, '..', 'controllers', 'membership.controller'));
 const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles'))
 
 /**
@@ -50,25 +50,7 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
  *              subscriptions: 0
  */
 
-/**
- * @openapi
- * /api/createSubscription/create:
- *  post:
- *      summary: create a new subscription
- *      tags: [Subscription]
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      type: object
- *                      $ref: '#/components/schemas/Subscription'
- *      responses:
- *          200:
- *              description: new subscription created,
- */
-
-router.post('/create', isAdmin, CreateSubscription.createSubscription)
+router.post('/create', isAdmin, MembershipController.createSubscription)
 
 /**
  *  @openapi
@@ -87,57 +69,10 @@ router.post('/create', isAdmin, CreateSubscription.createSubscription)
  *                                  $ref: '#/components/schemas/Subscription'
  */
 
-router.get('/', CreateSubscription.getSubscriptions)
+router.get('/', MembershipController.getSubscriptions)
 
-/**
- * @openapi
- * /api/createSubscription/{id}/principalImage:
- *  put:
- *      summary: update a subscription
- *      tags: [Subscription]
- *      parameters:
- *          - in: path
- *            name: id
- *            schema:
- *              type: string
- *            required: true
- *            description: the subscription id
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      type: object
- *                      $ref: '#/components/schemas/Subscription'  
- *      responses:
- *          200:
- *              description: subscription update
- *          404:
- *              description: subscription not found
- */
+router.put('/:id/principalImage', isAdmin, MembershipController.updatePrincipalImage)
 
-router.put('/:id/principalImage', isAdmin, CreateSubscription.updatePrincipalImage)
-
-/**
- * @openapi
- * /api/createSubscription/{id}:
- *  delete:
- *      summary: delete a subscription
- *      tags: [Subscription]
- *      parameters:
- *          - in: path
- *            name: id
- *            schema:
- *              type: string
- *            required: true
- *            description: the subscription id  
- *      responses:
- *          200:
- *              description: subscription delete
- *          404:
- *              description: subscription not found
- */
-
-router.delete('/:id', isAdmin,CreateSubscription.deleteSubscription)
+router.delete('/:id', isAdmin,MembershipController.deleteSubscription)
 
 module.exports = router

@@ -1,6 +1,6 @@
 const { Schema, model} = require("mongoose");
 
-const subscriptionSchema = new Schema({
+const membershipSchema = new Schema({
     name: {
         type: String,
         required: true
@@ -28,11 +28,7 @@ const subscriptionSchema = new Schema({
     principalImage: {
         type: String,
         required: true
-    },
-
-    subscriptions: {
-        type: Number
     }
 })
 
-module.exports = model('Subscription', subscriptionSchema)
+module.exports = model('Membership', membershipSchema)

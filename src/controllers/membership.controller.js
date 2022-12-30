@@ -1,11 +1,11 @@
 const path = require('path')
-const Subscription = require(path.join(__dirname, '..', 'models', 'subscription.model'))
+const Subscription = require(path.join(__dirname, '..', 'models', 'membership.model'))
 const deleteImage = require(path.join(__dirname, '..', 'libs', 'dirLibrary'));
 require("dotenv").config();
 
-const CreateSubscription = {};
+const MembershipController = {};
 
-CreateSubscription.createSubscription = async (req, res) => {
+MembershipController.createSubscription = async (req, res) => {
     try {
         const { filename } = req.files[0];
 
@@ -28,7 +28,7 @@ CreateSubscription.createSubscription = async (req, res) => {
     }
 }
 
-CreateSubscription.updatePrincipalImage = async (req, res) => {
+MembershipController.updatePrincipalImage = async (req, res) => {
     try {
         const {id} = req.params;
         const subscriptionFinded = await Subscription.findById(id)
@@ -53,7 +53,7 @@ CreateSubscription.updatePrincipalImage = async (req, res) => {
     }
 }
 
-CreateSubscription.deleteSubscription = async (req,res) => {
+MembershipController.deleteSubscription = async (req,res) => {
     try {
 
         const {id} = req.params;
@@ -74,7 +74,7 @@ CreateSubscription.deleteSubscription = async (req,res) => {
     }
 }
 
-CreateSubscription.getSubscriptions = async (req, res) => {
+MembershipController.getSubscriptions = async (req, res) => {
     try {
         const subscriptionsFinded = await Subscription.find()
 
@@ -87,4 +87,4 @@ CreateSubscription.getSubscriptions = async (req, res) => {
     }
 }
 
-module.exports = CreateSubscription
+module.exports = MembershipController

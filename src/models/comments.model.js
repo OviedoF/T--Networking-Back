@@ -9,6 +9,11 @@ const commentSchema = new Schema({
         type: String,
         required: true
     },
+    status: {
+        type: String,
+        enum: ['approved', 'in process', 'rejected'],
+        default: 'in process'
+    },
     commentedIn: Schema.Types.ObjectId,
     stars: Number
 }, {
