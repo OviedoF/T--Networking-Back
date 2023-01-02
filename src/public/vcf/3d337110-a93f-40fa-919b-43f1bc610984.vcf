@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+FN;CHARSET=UTF-8:Admin NetWorking
+N;CHARSET=UTF-8:NetWorking;Admin;;;
+EMAIL;CHARSET=UTF-8;type=HOME,INTERNET:netadmin@eiche.cl
+PHOTO;TYPE=undefined:https://res.cloudinary.com/syphhy/image/upload/v1672428122/vaporwave-background-vector_hhkdr6.webp
+TEL;TYPE=WORK,VOICE:543492621665
+TITLE;CHARSET=UTF-8:CEO
+ORG;CHARSET=UTF-8:Networking
+URL;CHARSET=UTF-8:http://localhost:5173/user/63b2e651eeaa8287c78c768f
+NOTE;CHARSET=UTF-8:I am the initial admin\, i have the control of all\, i am all. Sky is the limit for me and i am the limit for the sky.
+REV:2023-01-02T14:12:33.738Z
+END:VCARD

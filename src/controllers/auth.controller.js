@@ -43,7 +43,14 @@ authController.signUp = async (req, res) => {
             userImage: `${process.env.ROOT_URL}/images/${filename}`,
             password: await User.encryptPassword(password),
             roles: arrayRoles,
-            imageQr: `${process.env.ROOT_URL}/qr/${qrId}.png`
+            imageQr: `${process.env.ROOT_URL}/qr/${qrId}.png`,
+            daysMembership: 180,
+            job: "developer",
+            organization: "EICHE",
+            biography: "Ni idea",
+            firstName: "test",
+            lastName: "prueba",
+            backgroundImage: `${process.env.ROOT_URL}/images/${filename}`
         });
 
         const savedUser = await newUser.save();
