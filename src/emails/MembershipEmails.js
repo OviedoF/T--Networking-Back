@@ -122,14 +122,6 @@ const MembershipEmail = (image, enlaceWeb, networking, days, title) => {
 															
 															<table width="90" border="0" cellpadding="0" cellspacing="0" align="left" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="full">
 																<tr>
-																	<td width="67" align="center" class="fullCenter" >
-																		<a href="#" style="text-decoration: none;"><img src="images/image_67px_1.png" width="67" height="auto" alt="" border="0" class="hover" style="vertical-align: top;" ></a>
-																	</td>
-																</tr>
-																<tr>
-																	<td width="100%" height="15" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
-																</tr>
-																<tr>
 																	<td valign="middle" width="100%" style="text-align: center; font-family: 'Open Sans', Helvetica, Arial, sans-serif; font-size: 12px; color: rgb(95, 106, 116); line-height: 20px; font-weight: 700; text-transform: uppercase;" class="fullCenter" >
                                                                         ${days} dias de Suscrpcion
 																	</td>

@@ -38,7 +38,7 @@ emailsController.registrySuccess = async (req, res) => {
 
         const emailSended = await transporter.sendMail({
             from: `Networking APP <${process.env.MAIL_USERNAME}>`,
-            to: 'oviedofederico039@gmail.com',
+            to: 'emibarto@live.com.ar',
             subject: 'Networking APP - Solicitud de cambio de contraseña',
             html: messageHtml
         })
