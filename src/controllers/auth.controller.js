@@ -50,7 +50,8 @@ authController.signUp = async (req, res) => {
             biography: "Ni idea",
             firstName: "test",
             lastName: "prueba",
-            backgroundImage: `${process.env.ROOT_URL}/images/${filename}`
+            backgroundImage: `${process.env.ROOT_URL}/images/${filename}`,
+            userLink: "link usuario"
         });
 
         const savedUser = await newUser.save();

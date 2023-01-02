@@ -5,7 +5,10 @@ const PaymentsController = require(path.join(__dirname, '..', 'controllers', 'pa
 
 router.post('/', PaymentsController.getPaymentLink);
 
+router.get('/success', PaymentsController.paymentSuccess);
 router.post('/success', PaymentsController.paymentSuccess);
+router.delete('/success', PaymentsController.paymentSuccess);
+router.put('/success', PaymentsController.paymentSuccess);
 
 router.get('/invoice/:id', PaymentsController.getPaymentInvoice);
 

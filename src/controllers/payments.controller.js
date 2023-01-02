@@ -1,6 +1,7 @@
 require("dotenv").config();
 const path = require("path");
 const axios = require("axios");
+const { findByIdAndUpdate, findById } = require("../models/purchase.model");
 const Networking = require(path.join(__dirname, "..", "models", "networking.model"));
 const User = require(path.join(__dirname, "..", "models", "user.model"))
 const Purchase = require(path.join( __dirname, "..", "models", "purchase.model.js" ));
@@ -12,7 +13,15 @@ const PaymentsController = {};
 PaymentsController.getPaymentLink = async (req, res) => {
   try {
     const url = "https://api.mercadopago.com/checkout/preferences";
-    const { cart } = req.body;
+    const { cart, buyer } = req.body;
+
+    const newPurchase = new Purchase({
+      state: "in process",
+      buyer,
+      cart
+    })
+
+    await newPurchase.save();
 
     const items = cart.map((el) => {
       return {
@@ -38,7 +47,7 @@ PaymentsController.getPaymentLink = async (req, res) => {
       back_urls: {
         failure: "/failure",
         pending: "/pending",
-        success: "https://networking-api.eichechile.com/api/payments/success",
+        success: `https://networking-api.eichechile.com/api/payments/success?purchase_id=${newPurchase._id}&buyer=${buyer}`,
       },
       auto_return: "approved",
       statement_descriptor: "Networking", //Descripcion en Resumen de Tarjeta
@@ -52,6 +61,8 @@ PaymentsController.getPaymentLink = async (req, res) => {
         Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
       },
     });
+
+    console.log(payment.data)
 
     return res.status(201).send(payment.data);
   } catch (error) {
@@ -71,6 +82,12 @@ PaymentsController.paymentSuccess = async (req, res) => {
   */
 
   try {
+    const {purchase_id, buyer} = req.params;
+
+    console.log(purchase_id, buyer)
+
+
+    
     res.status(200).send({
       message: "Pago exitoso",
       params: req.params,
