@@ -17,9 +17,8 @@ const createQR = async (id) => {
     });
 
     const QR = await qrCode.toFile(path.join('src', 'public', 'qr', `${id}.png`), 
-    `${process.env.ROOT_URL}/api/user/${id}`, {color: {dark: '#1A120B', light: '#EEEEEE'}});
+    `${process.env.FRONTEND_URL}/user/${id}`, {color: {dark: '#1A120B', light: '#EEEEEE'}});
 }
-
 
 const createInitialAdmin = async () => {
     try {
@@ -31,7 +30,7 @@ const createInitialAdmin = async () => {
             let membership = {};
 
             const roles = await Role.find({name: {$in: ['user', 'admin']}}, {_id: true});
-            const membershipFinded = await Membership.findOne({name: 'Gratuita'},);
+            const membershipFinded = await Membership.findOne({name: 'Básica'},);
 
             if(roles.length > 0 && membershipFinded){
                 userRole = roles[0]._id;
@@ -73,6 +72,7 @@ const createInitialAdmin = async () => {
                     address: 'Av. Corrientes 1234'
                 },
                 vcard: `${process.env.ROOT_URL}vcard/${vcardId}.vcf`,
+                userLink: vcardId
             });
 
             VCardCreate({
@@ -83,7 +83,7 @@ const createInitialAdmin = async () => {
                 email: admin.email,
                 workPhone: admin.cellphone,
                 urlPhoto: admin.userImage, 
-                url: `${process.env.FRONTEND_URL}user/${admin._id}`, 
+                url: `${process.env.FRONTEND_URL}user/${vcardId}`, 
                 note: admin.biography, id: vcardId
             });
 

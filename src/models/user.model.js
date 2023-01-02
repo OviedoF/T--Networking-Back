@@ -7,6 +7,11 @@ const userSchema = new Schema({
         required: true
     },
 
+    userLink: {
+        type: String,
+        required: true
+    },
+
     backgroundImage: {
         type: String,
         required: true 
@@ -146,9 +151,16 @@ const userSchema = new Schema({
         disclaimer: {
             text: String,
         }
+    },
+    cards: [{
+        ref: 'Card',
+        type: Schema.Types.ObjectId
+    }],
+
+    userLink: {
+        type: String,
+        required: true
     }
-
-
 }, {
     timestamps: true,
     versionKey: false
