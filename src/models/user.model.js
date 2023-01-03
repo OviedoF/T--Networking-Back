@@ -6,16 +6,6 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-
-    userLink: {
-        type: String,
-        required: true
-    },
-
-    backgroundImage: {
-        type: String,
-        required: true 
-    },
     
     firstName: {
         type: String,
@@ -31,8 +21,6 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-
-    cellphone: String,
 
     email: {
         type: String,
@@ -77,22 +65,6 @@ const userSchema = new Schema({
         redirect: String
     }],
 
-    directions: [{
-        name: String,
-        region: String,
-        commune: String,
-        street: String,
-        number: String,
-        departament: String,
-        details: String,
-    }],
-
-    socialMedia: [{
-        name: String,
-        link: String,
-        color: String
-    }],
-
     membership: [{
         ref: "Membership",
         type: Schema.Types.ObjectId
@@ -108,50 +80,12 @@ const userSchema = new Schema({
         required: true
     },
 
-    job: {
-        type: String,
-        required: true
-    },
-
-    organization: {
-        type: String,
-        required: true
-    },
-
-    location: {
+    locations: [{
         country: String,
         city: String,
         address: String
-    },
+    }],
 
-    biography: {
-        type: String,
-        required: true
-    },
-
-    vcard: {
-        type: String
-    },
-
-    contactForm: {
-        title: String,
-        
-        inputs: [{
-            name: String,
-            type: String,
-            placeholder: String,
-            required: Boolean
-        }],
-
-        button: {
-            text: String,
-            color: String
-        },
-
-        disclaimer: {
-            text: String,
-        }
-    },
     cards: [{
         ref: 'Card',
         type: Schema.Types.ObjectId

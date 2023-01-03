@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+FN;CHARSET=UTF-8:Admin NetWorking
+N;CHARSET=UTF-8:NetWorking;Admin;;;
+EMAIL;CHARSET=UTF-8;type=HOME,INTERNET:netadmin@eiche.cl
+PHOTO;TYPE=undefined:https://res.cloudinary.com/syphhy/image/upload/v1672428122/vaporwave-background-vector_hhkdr6.webp
+URL;CHARSET=UTF-8:http://localhost:5173/user/c87a1585-3ac7-4819-8dd4-2b5a99c07667
+REV:2023-01-02T15:46:10.522Z
+END:VCARD

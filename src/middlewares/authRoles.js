@@ -27,6 +27,7 @@ const verifyToken = async (req, res, next) => {
 const isAdmin = async (req, res, next) => {
     try {
         const user = await User.findById(req.headers.userid);
+        console.log(req.headers)
 
         if(!user) return res.status(404).json({message: "No se reconoce el usuario, por favor logeate."});
 

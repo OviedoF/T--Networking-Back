@@ -23,6 +23,9 @@ const cardSchema = new Schema({
     jobEntity: {
         type: String
     },
+    email: {
+        type: String
+    },
     description: {
         type: String
     },

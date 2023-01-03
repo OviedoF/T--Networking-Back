@@ -47,7 +47,7 @@ const createInitialAdmin = async () => {
             const qrId = v4();
             createQR(qrId);    
 
-            const vcardId = v4();
+            const userLink = v4();
 
             const admin = new User({
                 firstName: process.env.INITIAL_ADMIN_FIRSTNAME,
@@ -62,33 +62,35 @@ const createInitialAdmin = async () => {
                 imageQr: `${process.env.ROOT_URL}/qr/${qrId}.png`,
                 membership: membership._id,
                 daysMembership: membership.days,
-                backgroundImage: "https://res.cloudinary.com/syphhy/image/upload/v1672428130/animated-anime_t1ccmm.gif",
-                biography: 'I am the initial admin, i have the control of all, i am all. Sky is the limit for me and i am the limit for the sky.',
-                job: 'CEO',
-                organization: 'Networking',
+                // backgroundImage: "https://res.cloudinary.com/syphhy/image/upload/v1672428130/animated-anime_t1ccmm.gif",
+                // biography: 'I am the initial admin, i have the control of all, i am all. Sky is the limit for me and i am the limit for the sky.',
+                // job: 'CEO',
+                // organization: 'Networking',
                 location: {
                     country: 'Argentina',
                     city: 'Buenos Aires',
                     address: 'Av. Corrientes 1234'
                 },
-                vcard: `${process.env.ROOT_URL}vcard/${vcardId}.vcf`,
-                userLink: vcardId
+                // vcard: `${process.env.ROOT_URL}vcard/${vcardId}.vcf`,
+                userLink: userLink
             });
 
-            VCardCreate({
-                firstName: admin.firstName,
-                lastName: admin.lastName,
-                organization: admin.organization,
-                title: admin.job,
-                email: admin.email,
-                workPhone: admin.cellphone,
-                urlPhoto: admin.userImage, 
-                url: `${process.env.FRONTEND_URL}user/${vcardId}`, 
-                note: admin.biography, id: vcardId
-            });
+            // VCardCreate({
+            //     firstName: admin.firstName,
+            //     lastName: admin.lastName,
+            //     organization: admin.organization,
+            //     title: admin.job,
+            //     email: admin.email,
+            //     workPhone: admin.cellphone,
+            //     urlPhoto: admin.userImage, 
+            //     url: `${process.env.FRONTEND_URL}user/${vcardId}`, 
+            //     note: admin.biography, id: vcardId
+            // });
 
-            const adminSaved = await admin.save();
+            await admin.save();
             console.log('Initial admin created.');
+
+
         }
     
     } catch (error) {
