@@ -14,10 +14,8 @@ const purchaseSchema = new Schema({
     ref: "User",
     required: true,
   },
-  seller: {
-    type: Schema.Types.ObjectId,
-    ref: "Networking",
-    required: true,
+  cart: {
+    type: Object
   },
   images: [String],
   products: Array,

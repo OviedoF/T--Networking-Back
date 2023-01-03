@@ -73,20 +73,9 @@ MembershipPayment.paymentSuccess = async (req, res) => {
         });
 
         products.forEach(async (subscription) => {
-            const dbSubscription = await Subscription.findById(subscription.idMembership, {subscriptions: true});
-            const nameSubsciption = await User.findById(idbuyer, {nameSubscription: true})
-
-            /*if ( nameSubsciption.nameSubscription.length === 0 ) {
-                const newSubscriptions = dbSubscription + 1;
-                await Subscription.findByIdAndUpdate(subscription.idMembership, {subscriptions: newSubscriptions});
-            }*/
-
-            await User.findByIdAndUpdate(idbuyer, {'$pull': { 'Subscription': subscription.idMembership }})
-            await User.findByIdAndUpdate(idbuyer, {nameSubsciption: subscription.name})            
-            await User.findByIdAndUpdate(idbuyer, {daysSubscription: subscription.days})
-            await User.findByIdAndUpdate(idbuyer, {description: subscription.description})
-            await User.findByIdAndUpdate(idbuyer, {imageSubscription: subscription.principalImage})
+          await User.findByIdAndUpdate(idbuyer, {daysMembership: subscription.days}) 
         });
+        await User.findByIdAndUpdate(idbuyer, {'$pull': { 'Membership': products }})            
    
         res.status(200).send('Membresia obtenida')
     } catch (error) {
