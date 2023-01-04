@@ -47,7 +47,7 @@ PaymentsController.getPaymentLink = async (req, res) => {
       back_urls: {
         failure: "/failure",
         pending: "/pending",
-        success: `https://networking-api.eichechile.com/api/payments/success?purchase_id=${newPurchase._id}&buyer=${buyer}`,
+        success: `https://networking-api.eichechile.com/api/payments/success/${newPurchase._id}/${buyer}`,
       },
       auto_return: "approved",
       statement_descriptor: "Networking", //Descripcion en Resumen de Tarjeta
@@ -61,8 +61,6 @@ PaymentsController.getPaymentLink = async (req, res) => {
         Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
       },
     });
-
-    console.log(payment.data)
 
     return res.status(201).send(payment.data);
   } catch (error) {
@@ -84,12 +82,18 @@ PaymentsController.paymentSuccess = async (req, res) => {
   try {
     const {purchase_id, buyer} = req.params;
 
-    console.log(purchase_id, buyer)
+    const userFinded = await User.findById({_id: buyer})
+    const purchaseFinded = await Purchase.find({_id: purchase_id})
+    
+    if(!userFinded) return res.status(404).send("Usuario no encontrado.")
+    if(!purchaseFinded) return res.status(404).send("Purchase no encontrado.")
 
+    const purchaseUpdated = await Purchase.findByIdAndUpdate({_id: purchase_id}, { state: "Procesado" })
+    const userUpdated = await User.findByIdAndUpdate({_id: buyer}, { $push : { shoppingHistory : purchaseFinded }})
 
     
     res.status(200).send({
-      message: "Pago exitoso",
+      message: "Pedido actualizado",
       params: req.params,
       body: req.body,
       headers: req.headers,
@@ -104,6 +108,17 @@ PaymentsController.getPaymentInvoice = async (req, res) => {
   try {
     const invoice = await PaymentInvoice.findById(req.params.id).populate(['buyer', 'seller']);
     return res.status(200).send(invoice);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+}
+
+PaymentsController.getOrders = async (req, res) => {
+  try {
+    const purchaseFinded = await Purchase.find();
+    
+    res.status(200).send(purchaseFinded);
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
