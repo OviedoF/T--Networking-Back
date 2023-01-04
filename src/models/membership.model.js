@@ -28,7 +28,11 @@ const membershipSchema = new Schema({
     image: {
         type: String,
         required: true
-    }
+    },
+
+    permissions: [{
+        
+    }]
 }, {
     timestamps: true,
     versionKey: false
