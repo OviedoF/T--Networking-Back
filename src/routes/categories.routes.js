@@ -146,6 +146,6 @@ router.put('/update/:id', isAdmin, categoriesControllers.updateCategory);
  *              description: category not found
  */
 
-router.delete('/delete/:id', isAdmin, categoriesControllers.deleteCategory);
+router.delete('/delete/:id', categoriesControllers.deleteCategory);
 
 module.exports = router;
