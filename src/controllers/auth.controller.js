@@ -45,12 +45,6 @@ authController.signUp = async (req, res) => {
             roles: arrayRoles,
             imageQr: `${process.env.ROOT_URL}/qr/${qrId}.png`,
             daysMembership: 180,
-            job: "developer",
-            organization: "EICHE",
-            biography: "Ni idea",
-            firstName: "test",
-            lastName: "prueba",
-            backgroundImage: `${process.env.ROOT_URL}/images/${filename}`,
             userLink: "link usuario"
         });
 
