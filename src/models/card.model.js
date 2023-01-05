@@ -13,6 +13,9 @@ const cardSchema = new Schema({
         type: String,
         required: true
     },
+    biography: {
+        type: String
+    },
     logoPhoto: {
         type: String,
         required: true
@@ -33,7 +36,8 @@ const cardSchema = new Schema({
         color: String,
         name: String,
         url: String,
-        favorite: Boolean
+        favorite: Boolean,
+        contrast: String
     }],
     location: {
         country: String,
@@ -42,6 +46,13 @@ const cardSchema = new Schema({
     },
     vcard: {
         type: String
+    },
+    vcardWants:{
+        type: Boolean,
+    },
+    addContact: {
+        type: Boolean,
+        default: false
     },
     contactForm: {
         title: String,
@@ -70,14 +81,24 @@ const cardSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    mobilePreview: {
-        type: String,
-        required: true
-    },
 
     cardLink: {
         type: String,
         required: true
+    }, 
+
+    cardStyle: {
+        type: Schema.Types.ObjectId,
+        ref: 'CardStyle'
+    },
+
+    historialStyles: [{
+        type: Schema.Types.ObjectId,
+        ref: 'CardStyle'
+    }],
+
+    cellphone: {
+        type: String
     }
 }, {
     timestamps: true

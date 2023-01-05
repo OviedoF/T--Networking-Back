@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+FN;CHARSET=UTF-8:Admin NetWorking
+N;CHARSET=UTF-8:NetWorking;Admin;;;
+EMAIL;CHARSET=UTF-8;type=HOME,INTERNET:oviedofederico039@gmail.com
+PHOTO;TYPE=undefined:http://localhost:4000/images/9ebb8617-6642-49f8-a3eb-d95149511db7.jpg
+TEL;TYPE=WORK,VOICE:03492611665
+TITLE;CHARSET=UTF-8:Full Stack Engineer Sr.
+ORG;CHARSET=UTF-8:Meta
+URL;CHARSET=UTF-8:http://localhost:5173/user/0dce8981-4721-41f6-b004-051cd6c3c9fc
+NOTE;CHARSET=UTF-8:ofksodpfksdapofsdkpao
+REV:2023-01-05T16:20:30.688Z
+END:VCARD

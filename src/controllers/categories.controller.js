@@ -100,10 +100,12 @@ categoriesControllers.deleteCategory = async (req, res) => {
             
             await Subcategory.findByIdAndDelete(idToString);
         }
-
+        
         const oldImageName = CategoryFinded.imageUrl.split('/images/')[1];
-        const routeImagesFolder = path.join(__dirname, '..', 'public', 'images', oldImageName);
-        deleteImage(routeImagesFolder);
+        if(oldImageName) {
+            const routeImagesFolder = path.join(__dirname, '..', 'public', 'images', oldImageName);
+            deleteImage(routeImagesFolder);
+        }
 
         const deletedItem = await Category.findByIdAndDelete(id);
 

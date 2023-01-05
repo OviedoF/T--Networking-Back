@@ -75,7 +75,7 @@ MembershipPayment.paymentSuccess = async (req, res) => {
         products.forEach(async (subscription) => {
           await User.findByIdAndUpdate(idbuyer, {daysMembership: subscription.days}) 
         });
-        await User.findByIdAndUpdate(idbuyer, {'$pull': { 'Membership': products }})            
+        await User.findByIdAndUpdate(idbuyer, { $pull : { 'Membership': products }})            
    
         res.status(200).send('Membresia obtenida')
     } catch (error) {
