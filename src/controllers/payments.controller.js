@@ -16,7 +16,7 @@ PaymentsController.getPaymentLink = async (req, res) => {
     const { cart, buyer, email } = req.body;
 
     const newPurchase = new Purchase({
-      state: "En proceso",
+      state: "Pendiente por comenzar",
       buyer,
       email,
       cart

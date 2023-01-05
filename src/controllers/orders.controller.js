@@ -9,19 +9,15 @@ const OrdersControllers = {};
 OrdersControllers.orderManagement = async (req, res) => {
     try {
 
-        const {id} = req.params;
-        const { stateOrder } = req.body;
+        const { state, id } = req.body;
     
-        console.log(id, stateOrder)
-    
-        const orderFinded = await Purchase.findById(id, {state: true, email: true});
+        const orderFinded = await Purchase.findById(id);
     
         if(!orderFinded) return res.status(404).send('La orden no existe.')
-    
-        console.log(orderFinded)
-    
-        /*const orderFind = await Purchase.findByIdAndUpdate(id, {state: state})
-    
+        
+        const orderFind = await Purchase.findByIdAndUpdate(id, {state: state})
+
+        /*
         if(state === "Enviado") {
     
             //Envio de email con codigo de seguimiento y notificacion de envio.

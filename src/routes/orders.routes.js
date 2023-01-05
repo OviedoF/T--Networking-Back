@@ -4,7 +4,7 @@ const router = express.Router();
 const OrdersControllers = require(path.join(__dirname, '..', 'controllers', 'orders.controller'));
 const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles'))
 
-router.put('/:id/orderManagement', isAdmin, OrdersControllers.orderManagement);
+router.put('/:id/orderManagement', OrdersControllers.orderManagement);
 
 //router.delete('/:id/orderDelete', isAdmin, OrdersControllers.deleteOrder)
 
