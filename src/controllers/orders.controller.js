@@ -9,41 +9,43 @@ const OrdersControllers = {};
 OrdersControllers.orderManagement = async (req, res) => {
     try {
 
-        const { state, id } = req.body;
+        const { state, id, trackingNumber, shippingEntity, sendDate, estimatedDate } = req.body;
     
         const orderFinded = await Purchase.findById(id);
     
         if(!orderFinded) return res.status(404).send('La orden no existe.')
-        
-        const orderFind = await Purchase.findByIdAndUpdate(id, {state: state})
 
-        /*
-        if(state === "Enviado") {
-    
-            //Envio de email con codigo de seguimiento y notificacion de envio.
-            const messageHtml = ``
-    
-            await sendEmail(messageHtml, userFinded.email, 'Producto enviado')
-    
+
+        if(state === 'Trabajando') {
+            await Purchase.findByIdAndUpdate
+            (id, { state: 'Trabajando' });
         }
-        if(state === "Listo para retirar") {
-    
-            //Envio de email notificando que ya se puede retirar el pedido
-            const messageHtml = ``
-    
-            await sendEmail(messageHtml, userFinded.email, 'Ya puede retirar su producto')
-    
+
+        if(state === 'Enviado') {
+            await Purchase.findByIdAndUpdate(id, {
+                    state : 'Enviado',
+                    trackingNumber: trackingNumber,
+                    shippingEntity: shippingEntity,
+                    shippingDate: sendDate,
+                    estimatedDate: estimatedDate
+            });
         }
-        if(state === "Finalizado") {
-    
-            //Envio de email para agradecimiento
-            const messageHtml = ``
-    
-            await sendEmail(messageHtml, userFinded.email, 'Gracias por su compra')
-    
-        }*/
-    
-        res.status(200).send(`Estado del pedido: ${state}.`)
+
+        if(state === 'Listo para retirar') {
+            await Purchase.findByIdAndUpdate(id, {
+                state: 'Listo para retirar',
+            })
+        }
+
+        if(state === 'Finalizado') {
+            await Purchase.findByIdAndUpdate
+            (id, { state: 'Finalizado' });
+        }
+
+        res.status(200).send({
+            message: `Estado del pedido: ${state}.`,
+            newStatus: state
+        })
     } catch (error) {
         console.log(error);
         return res.status(500).send(error);

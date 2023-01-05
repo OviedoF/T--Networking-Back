@@ -114,4 +114,36 @@ usersControllers.updateSocialMedia = async (req, res) => {
     }
 }
 
+usersControllers.actualizeShoppingCart = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const {type, product, productid} = req.body;
+
+        const userFinded = await User.findById(id);
+        let shoppingCart = userFinded.shoppingCart;
+
+        if(!userFinded) return res.status(404).send("Usuario no encontrado.")
+
+        console.log(shoppingCart)
+
+        if(type === 'add') {
+            shoppingCart.push(JSON.parse(product));
+        }
+
+        if(type === 'remove') {
+            shoppingCart = shoppingCart.filter(product => JSON.parse(product).id !== productid)
+        }
+
+        console.log(shoppingCart);
+
+        const userUpdated = await User.findByIdAndUpdate(id, {
+            shoppingCart
+        }, {new: true});
+
+        res.status(200).send(userUpdated)
+    } catch (error) {
+        return res.status(500).send({message: 'Usuario no modificado.'});
+    }
+}
+
 module.exports = usersControllers;

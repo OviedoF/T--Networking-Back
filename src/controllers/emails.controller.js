@@ -54,7 +54,7 @@ emailsController.registrySuccess = async (req, res) => {
 
 emailsController.confirmingPurchase = async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, trackingCode } = req.body;
         
         const user = await User.findOne({email})
 
@@ -73,8 +73,8 @@ emailsController.confirmingPurchase = async (req, res) => {
             }
         });
 
-        const messageHtml = ConfirmingPurchaseEmail("https://res.cloudinary.com/syphhy/image/upload/v1672259034/logo_cplmck.png", "Su compra se ha completado de manera exitosa!",
-        `Hola ${user.name}, gracias por confiar en nosotros!`, "Con este codigo segui el paso de tu pedido!", 'https://networking.eichechile.com/', 'Networking APP')
+        const messageHtml = ConfirmingPurchaseEmail("https://res.cloudinary.com/syphhy/image/upload/v1672259034/logo_cplmck.png", "Se ha enviado su pedido!",
+        `Hola ${user.name}, gracias por confiar en nosotros!`, "Con este codigo segui el paso de tu pedido!", 'https://networking.eichechile.com/', trackingCode ,'Networking APP')
 
         const emailSended = await transporter.sendMail({
             from: `Networking APP <${process.env.MAIL_USERNAME}>`,

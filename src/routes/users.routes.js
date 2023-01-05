@@ -225,4 +225,6 @@ router.put('/:id/updateUser', isAdmin, usersControllers.updateUserAdmin);
 router.put('/:id/updateUserImage', isAdmin, usersControllers.updateUserAdminImage);
 router.put('/:id/updateUserSocial', usersControllers.updateSocialMedia);
 
+router.put('/:id/updateShoppingCart', usersControllers.actualizeShoppingCart);
+
 module.exports = router;

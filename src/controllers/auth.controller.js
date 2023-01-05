@@ -8,6 +8,7 @@ const Role = require(path.join(__dirname, '..', 'models', 'role.model'));
 const User = require(path.join(__dirname, '..', 'models', 'user.model'));
 const News = require(path.join(__dirname, '..', 'models', 'news.model'));
 const Comments = require(path.join(__dirname, '..', 'models', 'comments.model'));
+const membership = require(path.join(__dirname, '..', 'models', 'membership.model'));
 
 const authController = {};
 
@@ -27,6 +28,9 @@ authController.signUp = async (req, res) => {
         const { password, roles } = req.body;
         let arrayRoles;
 
+        const BasicMembership = await membership.findOne({name: 'Básica'});
+        const BasicMembershipId = BasicMembership._id;
+
         if(roles) {
             const userRoles = await Role.find({name: {$in: roles}});
             arrayRoles = userRoles.map(el => el._id);
@@ -45,7 +49,8 @@ authController.signUp = async (req, res) => {
             roles: arrayRoles,
             imageQr: `${process.env.ROOT_URL}/qr/${qrId}.png`,
             daysMembership: 180,
-            userLink: "link usuario"
+            userLink: "link usuario",
+            membership: [BasicMembershipId],
         });
 
         const savedUser = await newUser.save();

@@ -18,17 +18,14 @@ const purchaseSchema = new Schema({
   cart: {
     type: Object
   },
+  paymentMethod: String,
   images: [String],
-  products: Array,
   type: String,
   shipping: Boolean,
-  shippingCode: String,
+  trackingNumber: String,
   shippingDate: Date,
-  shippingCost: Number,
   shippingEntity: String,
-  shippingAddress: String,
-  shippingCity: String,
-  shippingState: String,
+  estimatedDate: Date,
 }, {
     timestamps: true,
     timeseries: true

@@ -1,4 +1,4 @@
-const ConfirmingPurchaseEmail = (image, titleOne, titleTwo, titleThree, enlaceWeb, networking) => {
+const ConfirmingPurchaseEmail = (image, titleOne, titleTwo, titleThree, enlaceWeb, trackingCode, networking) => {
     return `
     <!-- Notification 3  -->
 <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full"  bgcolor="#e3e6ed"style="background-color: rgb(242, 244, 249);">
@@ -129,7 +129,7 @@ const ConfirmingPurchaseEmail = (image, titleOne, titleTwo, titleThree, enlaceWe
 													</tr>
 													<tr>
 														<td valign="middle" width="100%" style="text-align: center; font-family: 'Open Sans', Helvetica, Arial, sans-serif; font-size: 14px; color: rgb(142, 145, 151); line-height: 24px; font-weight: 400;" class="fullCenter" >
-															${titleThree} 
+															${trackingCode} 
 														</td>
 													</tr>
 												</table>

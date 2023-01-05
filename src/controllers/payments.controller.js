@@ -13,16 +13,7 @@ const PaymentsController = {};
 PaymentsController.getPaymentLink = async (req, res) => {
   try {
     const url = "https://api.mercadopago.com/checkout/preferences";
-    const { cart, buyer, email } = req.body;
-
-    const newPurchase = new Purchase({
-      state: "Pendiente por comenzar",
-      buyer,
-      email,
-      cart
-    })
-
-    await newPurchase.save();
+    const { cart, buyer } = req.body;
 
     const items = cart.map((el) => {
       return {
@@ -48,7 +39,7 @@ PaymentsController.getPaymentLink = async (req, res) => {
       back_urls: {
         failure: "/failure",
         pending: "/pending",
-        success: `https://networking-api.eichechile.com/api/payments/success/${newPurchase._id}/${buyer}`,
+        success: `https://networking-api.eichechile.com/api/payments/success/${buyer}`,
       },
       auto_return: "approved",
       statement_descriptor: "Networking", //Descripcion en Resumen de Tarjeta
@@ -84,17 +75,28 @@ PaymentsController.paymentSuccess = async (req, res) => {
     const {purchase_id, buyer} = req.params;
 
     const userFinded = await User.findById({_id: buyer})
-    const purchaseFinded = await Purchase.find({_id: purchase_id})
     
     if(!userFinded) return res.status(404).send("Usuario no encontrado.")
-    if(!purchaseFinded) return res.status(404).send("Purchase no encontrado.")
 
-    const purchaseUpdated = await Purchase.findByIdAndUpdate({_id: purchase_id}, { state: "Procesado" })
-    const userUpdated = await User.findByIdAndUpdate({_id: buyer}, { $push : { shoppingHistory : purchaseFinded }})
+    const userCart = userFinded.shoppingCart;
+
+    const newPurchase = new Purchase({
+      buyer: buyer,
+      cart: userCart,
+      state: "Pendiente",
+      paymentMethod: "Mercado Pago",
+      images: userCart.map((el) => el.principalImage),
+      type: "Productos",
+    });
+
+    const purchaseSaved = await newPurchase.save();
+
+    const userUpdated = await User.findByIdAndUpdate({_id: buyer}, { '$push' : { shoppingHistory : purchaseSaved._id, 
+      shoppingCart: [] }}, {new: true})
 
     
     res.status(200).send({
-      message: "Pedido actualizado",
+      message: "Pedido creado exitosamente",
       params: req.params,
       body: req.body,
       headers: req.headers,
@@ -117,7 +119,7 @@ PaymentsController.getPaymentInvoice = async (req, res) => {
 
 PaymentsController.getOrders = async (req, res) => {
   try {
-    const purchaseFinded = await Purchase.find();
+    const purchaseFinded = await Purchase.find().populate('buyer');
     
     res.status(200).send(purchaseFinded);
   } catch (error) {
