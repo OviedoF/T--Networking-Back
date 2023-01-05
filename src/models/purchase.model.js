@@ -14,6 +14,7 @@ const purchaseSchema = new Schema({
     ref: "User",
     required: true,
   },
+  email: String,
   cart: {
     type: Object
   },

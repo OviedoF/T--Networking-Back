@@ -7,42 +7,51 @@ const sendEmail = require(path.join(__dirname, '..', 'libs', 'emails.templates')
 const OrdersControllers = {};
 
 OrdersControllers.orderManagement = async (req, res) => {
-    const {id, buyer} = req.params;
-    const { state } = req.body;
-    const orderFinded = await Purchase.findById(id, {state: true});
-    const userFinded = await User.find({username: buyer}, {email: true})
+    try {
 
-    if(!orderFinded) return res.status(404).send('La orden no existe.')
-    if(!userFinded) return res.status(404).send('El comprador no existe.')
-
-    const orderFind = await Purchase.findByIdAndUpdate(id, {state: state})
-
-    if(state === "Enviado") {
-
-        //Envio de email con codigo de seguimiento y notificacion de envio.
-        const messageHtml = ``
-
-        await sendEmail(messageHtml, userFinded.email, 'Producto enviado')
-
+        const {id} = req.params;
+        const { stateOrder } = req.body;
+    
+        console.log(id, stateOrder)
+    
+        const orderFinded = await Purchase.findById(id, {state: true, email: true});
+    
+        if(!orderFinded) return res.status(404).send('La orden no existe.')
+    
+        console.log(orderFinded)
+    
+        /*const orderFind = await Purchase.findByIdAndUpdate(id, {state: state})
+    
+        if(state === "Enviado") {
+    
+            //Envio de email con codigo de seguimiento y notificacion de envio.
+            const messageHtml = ``
+    
+            await sendEmail(messageHtml, userFinded.email, 'Producto enviado')
+    
+        }
+        if(state === "Listo para retirar") {
+    
+            //Envio de email notificando que ya se puede retirar el pedido
+            const messageHtml = ``
+    
+            await sendEmail(messageHtml, userFinded.email, 'Ya puede retirar su producto')
+    
+        }
+        if(state === "Finalizado") {
+    
+            //Envio de email para agradecimiento
+            const messageHtml = ``
+    
+            await sendEmail(messageHtml, userFinded.email, 'Gracias por su compra')
+    
+        }*/
+    
+        res.status(200).send(`Estado del pedido: ${state}.`)
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send(error);
     }
-    if(state === "Listo para retirar") {
-
-        //Envio de email notificando que ya se puede retirar el pedido
-        const messageHtml = ``
-
-        await sendEmail(messageHtml, userFinded.email, 'Ya puede retirar su producto')
-
-    }
-    if(state === "Finalizado") {
-
-        //Envio de email para agradecimiento
-        const messageHtml = ``
-
-        await sendEmail(messageHtml, userFinded.email, 'Gracias por su compra')
-
-    }
-
-    res.status(200).send(`Estado del pedido: ${state}.`)
 }
 
 /*OrdersControllers.deleteOrder = async (req, res) => {

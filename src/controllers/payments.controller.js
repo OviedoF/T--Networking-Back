@@ -13,11 +13,12 @@ const PaymentsController = {};
 PaymentsController.getPaymentLink = async (req, res) => {
   try {
     const url = "https://api.mercadopago.com/checkout/preferences";
-    const { cart, buyer } = req.body;
+    const { cart, buyer, email } = req.body;
 
     const newPurchase = new Purchase({
-      state: "in process",
+      state: "En proceso",
       buyer,
+      email,
       cart
     })
 
