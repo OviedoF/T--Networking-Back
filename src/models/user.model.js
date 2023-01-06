@@ -44,7 +44,9 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId
     }],
 
-    shoppingCart: [Object],
+    shoppingCart: [{
+        
+    }],
 
     membershipsCart: [{
         ref: "Membership",

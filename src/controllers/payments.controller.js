@@ -72,7 +72,8 @@ PaymentsController.paymentSuccess = async (req, res) => {
   */
 
   try {
-    const {purchase_id, buyer} = req.params;
+    const {buyer} = req.params;
+    console.log(buyer)
 
     const userFinded = await User.findById({_id: buyer})
     
@@ -95,7 +96,7 @@ PaymentsController.paymentSuccess = async (req, res) => {
       shoppingCart: [] }}, {new: true})
 
     
-    res.status(200).send({
+    res.status(201).send({
       message: "Pedido creado exitosamente",
       params: req.params,
       body: req.body,

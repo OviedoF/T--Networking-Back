@@ -117,7 +117,7 @@ usersControllers.updateSocialMedia = async (req, res) => {
 usersControllers.actualizeShoppingCart = async (req, res) => {
     try {
         const {id} = req.params;
-        const {type, product, productid} = req.body;
+        const {type, product} = req.body;
 
         const userFinded = await User.findById(id);
         let shoppingCart = userFinded.shoppingCart;
@@ -131,7 +131,8 @@ usersControllers.actualizeShoppingCart = async (req, res) => {
         }
 
         if(type === 'remove') {
-            shoppingCart = shoppingCart.filter(product => JSON.parse(product).id !== productid)
+            const productIndex = shoppingCart.findIndex((productCart) => productCart._id === product._id);
+            shoppingCart.splice(productIndex, 1);
         }
 
         console.log(shoppingCart);
@@ -142,6 +143,7 @@ usersControllers.actualizeShoppingCart = async (req, res) => {
 
         res.status(200).send(userUpdated)
     } catch (error) {
+        console.log(error);
         return res.status(500).send({message: 'Usuario no modificado.'});
     }
 }

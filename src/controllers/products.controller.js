@@ -147,6 +147,7 @@ productsControllers.createProduct = async (req, res) => {
         const principalImage = req.files.shift();
         const { filename } = principalImage; // req.files[0] = imágen destacada.
         const galeryImages = [];
+        const {colors} = req.body;
 
         if(req.files.length >= 0 ){ 
             req.files.forEach(el => {
@@ -157,6 +158,7 @@ productsControllers.createProduct = async (req, res) => {
 
         const newProduct = await new Product({
             ...req.body,
+            colors: JSON.parse(colors),
             principalImage: `${process.env.ROOT_URL}/images/${filename}`,
             galeryImages,
         });

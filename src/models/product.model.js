@@ -3,11 +3,13 @@ const {Schema, model} = require('mongoose');
 const productSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        default: "Sin nombre"
     },
     description: {
         type: String,
-        required: true
+        required: true,
+        default: "Sin descripción"
     },
     category: {
         ref: 'Category',
@@ -20,8 +22,18 @@ const productSchema = new Schema({
     stock: Number,
     price: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     },
+    requiredQR: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    colors: [{
+        name: String,
+        hex: String
+    }],
     priceWithOffer: {
         type: Number
     },

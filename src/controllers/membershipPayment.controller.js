@@ -60,24 +60,23 @@ MembershipPayment.paymentSuccess = async (req, res) => {
     try {
         const { idbuyer } = req.headers;
         const { membership } = req.body;
-        
-        const products = membership.map((el) => {
-            return {
-                name: el.name,
-                price: el.price,
-                days: el.days,
-                description: el.description,
-                image: el.principalImage,
-                idMembership: el.id
-            };
+
+        const membershipFinded = await Subscription.find({ _id: membership });
+        const user = await User.findById(idbuyer);
+
+        if (!user) {
+            return res.status(404).send('El usuario no existe');
+        };
+
+        if (!membershipFinded) {
+            return res.status(404).send('La membresia no existe');
+        };
+
+        await User.findByIdAndUpdate(idbuyer, {
+            membership: [membershipFinded[0]._id]
         });
 
-        products.forEach(async (subscription) => {
-          await User.findByIdAndUpdate(idbuyer, {daysMembership: subscription.days}) 
-        });
-        await User.findByIdAndUpdate(idbuyer, { $pull : { 'Membership': products }})            
-   
-        res.status(200).send('Membresia obtenida')
+        res.status(200).send('Membresia actualizada')
     } catch (error) {
     res.status(500).send(error);
     console.log(error);
