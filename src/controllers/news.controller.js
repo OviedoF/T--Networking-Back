@@ -17,7 +17,7 @@ newsController.getNews = async (req, res) => {
 
 newsController.createNews = async (req, res) => {
     try {
-        const {title, description, authorId} = req.body;
+        const {authorId} = req.body;
 
         const user = await User.findById(authorId);
         if(!user) return res.status(404).json({
@@ -28,8 +28,7 @@ newsController.createNews = async (req, res) => {
         const imageUrl = `${process.env.ROOT_URL}/images/${filename}`;
 
         const news = new News({
-            title,
-            description,
+            ...req.body,
             image: imageUrl,
             author: authorId
         });

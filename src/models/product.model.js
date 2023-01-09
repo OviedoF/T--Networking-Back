@@ -30,6 +30,13 @@ const productSchema = new Schema({
         required: true,
         default: false
     },
+    
+    requireImageEditable: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+
     colors: [{
         name: String,
         hex: String

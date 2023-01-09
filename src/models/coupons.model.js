@@ -13,6 +13,9 @@ const couponSchema = new Schema({
         type: Number,
         required: true
     },
+    usedFor: {
+        type: String,
+    }
 });
 
 module.exports = model('Coupon', couponSchema);
