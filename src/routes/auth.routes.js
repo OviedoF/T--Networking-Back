@@ -19,6 +19,8 @@ router.post('/login', authController.signIn);
 
 router.post('/login/identifyUser', authController.identifyUserJSW);
 
+router.post('/google-oauth', authController.googleSignIn );
+
 router.get('/roles', authController.getRoles);
 
 router.delete('/usersDelete', authController.deleteUsers)

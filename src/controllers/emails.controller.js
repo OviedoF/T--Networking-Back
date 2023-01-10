@@ -216,4 +216,45 @@ emailsController.thirtyDays = async (req, res) => {
     }
 }
 
+emailsController.sendRequest = async (req, res) => {
+    try {
+        const { name, email, type, message } = req.body;
+
+        const transporter = await nodemailer.createTransport({
+            host: process.env.MAIL_HOST,
+            port: process.env.MAIL_PORT,
+            secure: true,
+            auth: {
+                user: process.env.MAIL_USERNAME,
+                pass: process.env.MAIL_PASSWORD
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
+        const messageHtml = `
+            <h1>${type}</h1>
+            <h2>Nombre: ${name}</h2>
+            <h2>Email: ${email}</h2>
+            <h2>Mensaje: <p>${message}</p></h2>
+        `
+
+        const emailSended = await transporter.sendMail({
+            from: `Networking APP <${process.env.MAIL_USERNAME}>`,
+            to: 'oviedofederico039@gmail.com',
+            subject: `Biznes - ${type}`,
+            html: messageHtml
+        })
+
+        res.status(201).send({
+            message: 'Email enviado con exito!'
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+        
+
 module.exports = emailsController;

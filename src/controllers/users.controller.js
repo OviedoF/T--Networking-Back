@@ -2,6 +2,7 @@ const path = require("path")
 const User = require(path.join(__dirname, '..', 'models', 'user.model'));
 const Role = require(path.join(__dirname, '..', 'models', 'role.model'));
 const deleteImage = require(path.join(__dirname, '..', 'libs', 'dirLibrary'));
+const Product = require(path.join(__dirname, '..', 'models', 'product.model'));
 
 const usersControllers = {};
 
@@ -124,10 +125,24 @@ usersControllers.actualizeShoppingCart = async (req, res) => {
 
         if(!userFinded) return res.status(404).send("Usuario no encontrado.")
 
-        console.log(shoppingCart)
-
         if(type === 'add') {
-            shoppingCart.push(JSON.parse(product));
+            const productFinded = await Product.findById(req.body.product);
+
+            const objectToCart = {
+                ...productFinded._doc,
+                quantity: req.body.quantity,
+                colorSelected: req.body.color,
+                linkToRedirect: req.body.linkToRedirect,
+                images: []
+            }
+    
+            req.files.forEach((file) => {
+                objectToCart.images.push(`${process.env.ROOT_URL}images/${file.filename}`);
+            })
+    
+            console.log(objectToCart);
+
+            shoppingCart.push(objectToCart);
         }
 
         if(type === 'remove') {
@@ -139,9 +154,11 @@ usersControllers.actualizeShoppingCart = async (req, res) => {
 
         const userUpdated = await User.findByIdAndUpdate(id, {
             shoppingCart
-        }, {new: true});
+        }, {new: true}).populate(['membership', 'cards']);
 
-        res.status(200).send(userUpdated)
+        res.status(200).send({
+            ...userUpdated._doc
+        })
     } catch (error) {
         console.log(error);
         return res.status(500).send({message: 'Usuario no modificado.'});

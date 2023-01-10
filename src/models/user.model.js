@@ -28,12 +28,6 @@ const userSchema = new Schema({
         unique: true
     },
 
-    userId: {
-        type: Number,
-        required: true,
-        unique: true
-    },
-
     password: {
         type: String,
         required: true
@@ -46,11 +40,6 @@ const userSchema = new Schema({
 
     shoppingCart: [{
         
-    }],
-
-    membershipsCart: [{
-        ref: "Membership",
-        type: Schema.Types.ObjectId
     }],
 
     shoppingHistory: [{
@@ -76,7 +65,7 @@ const userSchema = new Schema({
 
     imageQr: {
         type: String,
-        required: true
+        required: false
     },
 
     locations: [{
@@ -90,10 +79,16 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId
     }],
 
-    userLink: {
+    googleId: {
         type: String,
-        required: true
+        required: false
+    }, 
+
+    userId: {
+        type: String,
+        required: false
     }
+
 }, {
     timestamps: true,
     versionKey: false

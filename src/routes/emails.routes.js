@@ -9,5 +9,6 @@ router.post('/recoverPassword', emailsControllers.recoverPassword)
 router.post('/verificationRegistration', emailsControllers.verificationRegistration)
 
 router.post('/thirtyDays', emailsControllers.thirtyDays)
+router.post('/request', emailsControllers.sendRequest)
 
 module.exports = router;

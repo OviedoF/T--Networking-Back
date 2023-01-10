@@ -162,7 +162,7 @@ productsControllers.createProduct = async (req, res) => {
             principalImage: `${process.env.ROOT_URL}/images/${filename}`,
             galeryImages,
         });
-
+        
         await newProduct.save();
 
         res.status(201).send(newProduct);

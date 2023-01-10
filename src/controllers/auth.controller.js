@@ -103,7 +103,7 @@ authController.signIn = async (req, res) => {
         console.log(error);
         res.status(500).send(error);
     }
-}
+};
 
 authController.identifyUserJSW = async (req, res) => {
     try {
@@ -138,7 +138,7 @@ authController.identifyUserJSW = async (req, res) => {
         console.log(error);
         res.status(500).send(error);
     }
-}
+};
 
 authController.getRoles = async (req, res) => {
     try {
@@ -177,6 +177,77 @@ authController.deleteUsers = async (req, res) => {
         return res.status(500).send(error);
     }
 
-}
+};
+
+authController.googleSignIn = async (req, res) => {
+    try {
+        const { email, familyName, givenName, googleId, imageUrl, name } = req.body;
+
+        const userFound = await User.findOne({
+            email: email,
+            googleId: googleId
+        }, {
+            password: false
+        }).populate(["roles", "membership"]);
+
+        if(!userFound) {
+            const BasicMembership = await membership.findOne({name: 'Básica'});
+            const BasicMembershipId = BasicMembership._id;
+            const userRoles = await Role.findOne({name: 'user'});
+            arrayRoles = [userRoles._id];
+            
+            const newUser = await new User({
+                firstName: givenName,
+                lastName: familyName || ' ',
+                username: name,
+                email: email,
+                googleId: googleId,
+                userImage: `${process.env.ROOT_URL}images/userimage.png`,
+                roles: arrayRoles,
+                password: await User.encryptPassword(googleId),
+                membership: [BasicMembershipId],
+                daysMembership: 365,
+                userId: googleId
+            });
+
+            const savedUser = await newUser.save();
+
+            const token = jwt.sign({id: savedUser._id}, 'FKDOCKODfkpodKCDfkD0F9Dkc90d', {
+                expiresIn: 86400
+            });
+
+            res.status(201).send({
+                token,
+                message: 'Usuario registrado correctamente!',
+                ...savedUser._doc,
+                membership: [BasicMembership],
+                roles: arrayRoles
+            })
+
+        } else {
+            const token = jwt.sign({id: userFound._id}, 'FKDOCKODfkpodKCDfkD0F9Dkc90d', {
+                expiresIn: 86400
+            });
+
+            const actualizedUser = await User.findByIdAndUpdate(userFound._id, {
+                googleId: googleId,
+            }, {new: true});
+
+            res.status(200).json({
+                token,
+                message: 'Usuario logueado correctamente!',
+                ...userFound._doc
+            });
+        }
+
+    } catch (error) {
+        console.log(error);
+        res
+            .status(500)
+            .send(error);
+    }
+};
+
+
 
 module.exports = authController;
