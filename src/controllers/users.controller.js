@@ -8,7 +8,15 @@ const usersControllers = {};
 
 usersControllers.getAllUsers = async (req, res) => {
     try {
-        const usersFinded = await User.find().populate('roles');
+        const usersFinded = await User.find({
+            '$or': [
+                {
+                    privacyType: 'public'
+                },{
+                    privacyType: 'private',
+                }
+            ]
+        }).populate(['roles', 'membership', 'cards']);
 
         res.status(200).send(usersFinded)
     } catch (error) {
@@ -38,7 +46,7 @@ usersControllers.getAdminUser = async (req, res) => {
 
 usersControllers.getUserById = async (req, res) => {
     try {
-        const userFinded = await User.findById(req.params.id, { password: false });
+        const userFinded = await User.findById(req.params.id, { password: false }).populate(['roles', 'membership', 'cards']);
         
         if (!userFinded) {
             return res.status(404).send({
@@ -159,6 +167,40 @@ usersControllers.actualizeShoppingCart = async (req, res) => {
         res.status(200).send({
             ...userUpdated._doc
         })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({message: 'Usuario no modificado.'});
+    }
+}
+
+usersControllers.updateUser = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        const userFinded = await User.findById(id);
+
+        if(!userFinded) return res.status(404).send({
+            message: 'Usuario no encontrado.'
+        })
+
+        if(req.files[0]){
+            const {filename} = req.files[0];
+
+            const userUpdated = await User.findByIdAndUpdate(id, {
+                ...req.body,
+                userImage: `${process.env.ROOT_URL}/images/${filename}`
+            }, {
+                new: true
+            }).populate(['roles', 'membership', 'cards'])
+
+            return res.status(200).send(userUpdated)
+        }
+        
+        const userUpdated = await User.findByIdAndUpdate(id, req.body, {
+            new: true
+        })
+
+        return res.status(200).send(userUpdated)
     } catch (error) {
         console.log(error);
         return res.status(500).send({message: 'Usuario no modificado.'});

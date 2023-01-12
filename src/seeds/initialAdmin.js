@@ -61,6 +61,7 @@ const createInitialAdmin = async () => {
                 userImage: "https://res.cloudinary.com/syphhy/image/upload/v1672428122/vaporwave-background-vector_hhkdr6.webp",
                 imageQr: `${process.env.ROOT_URL}/qr/${qrId}.png`,
                 membership: membership._id,
+                privacyType: 'public',
                 daysMembership: membership.days,
                 // backgroundImage: "https://res.cloudinary.com/syphhy/image/upload/v1672428130/animated-anime_t1ccmm.gif",
                 // biography: 'I am the initial admin, i have the control of all, i am all. Sky is the limit for me and i am the limit for the sky.',

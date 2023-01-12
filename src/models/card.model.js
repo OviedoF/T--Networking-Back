@@ -84,7 +84,8 @@ const cardSchema = new Schema({
 
     cardLink: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     }, 
 
     cardStyle: {

@@ -115,7 +115,7 @@ const { isAdmin } = require(path.join(__dirname, '..', 'middlewares', 'authRoles
  *                                  $ref: '#/components/schemas/Users'
  */
 
-router.get('/', isAdmin, usersControllers.getAllUsers);
+router.get('/', usersControllers.getAllUsers);
 
 /**
  *  @openapi
@@ -226,5 +226,6 @@ router.put('/:id/updateUserImage', isAdmin, usersControllers.updateUserAdminImag
 router.put('/:id/updateUserSocial', usersControllers.updateSocialMedia);
 
 router.put('/:id/updateShoppingCart', usersControllers.actualizeShoppingCart);
+router.put('/update/:id', usersControllers.updateUser);
 
 module.exports = router;

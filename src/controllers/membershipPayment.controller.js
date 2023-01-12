@@ -1,44 +1,33 @@
 require("dotenv").config();
 const path = require("path")
-const axios = require
+const axios = require('axios');
 const User = require(path.join(__dirname, '..', 'models', 'user.model'));
 const Subscription = require(path.join( __dirname, "..", "models", "membership.model.js" ));
+const {v4} = require('uuid');
+const moment = require('moment');
 
 const MembershipPayment = {}
 
 MembershipPayment.getPaymentLink = async (req, res) => {
     try {
         const url = "https://api.mercadopago.com/preapproval";
-        const { membership } = req.body;
-
-        const auto_recurring = membership.map((el) => {
-            return {
-                name: el.name,
-                description: el.description,
-                price: el.price,
-                days: el.days,
-                priceWithOffer: el.priceWithOffer,
-                principalImage: el.principalImage
-            };
-        });
+        const { cart, userid } = req.body;
+        let date = moment().add(5, 'minutes').toISOString();
+        console.log(userid);
 
         const body = {
-            payer_email: "test_user_83219432@testuser.com",
-            payer: {
-                id: "test_user_49360370",
-                email: "test_user_83219432@testuser.com",
-                name: "Test User",
+            auto_recurring: {
+                start_date: date,
+                frequency: 1,
+                frequency_type: "months",
+                transaction_amount: 15000,
+                currency_id: "CLP"
             },
-            auto_recurring,
-            back_urls: {
-                failure: "/failure",
-                pending: "/pending",
-                success: "/success",
-            },
-            auto_return: "approved",
-            statement_descriptor: "Networking", //Descripcion en Resumen de Tarjeta
-            notificacion_url: `https://${process.env.ROOT_URL}/api/subscription/notifications`,
-            additional_info: `MEMBRESIA ${auto_recurring.name} POR ${auto_recurring.days}`,
+            back_url: `http://tienda-api.biznes.cl/api/membershipPayment/success/${userid}`,
+            payer_email: "test_user_49360370@testuser.com",
+            reason: `${cart.description.toUpperCase()} POR ${cart.period === "month" ? "1 MES" : "1 AÑO"}`,
+            notificacion_url: `http://tienda-api.biznes.cl/api/membershipPayment/notification/${userid}/${cart._id}`,
+            external_reference: userid,
         };
 
         const subscription = await axios.post(url, body, {
@@ -48,10 +37,11 @@ MembershipPayment.getPaymentLink = async (req, res) => {
             },
         });
 
-        return res.status(201).send(subscription.data)
+        console.log(subscription.data)
 
+        return res.status(201).send(subscription.data)
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
         return res.status(500).send(error);
     }
 }
@@ -81,6 +71,31 @@ MembershipPayment.paymentSuccess = async (req, res) => {
     res.status(500).send(error);
     console.log(error);
   }
+}
+
+MembershipPayment.checkPayment = async (req, res) => {
+    try {
+        const { idbuyer } = req.headers;
+
+        const user = await User.findById(idbuyer);
+
+        if (!user) {
+            return res.status(404).send('El usuario no existe');
+        };
+
+        res.status(200).send({
+            headers: req.headers,
+            body: req.body,
+            user: user,
+            params: req.params
+        })
+    } catch (error) {
+    res.status
+    (500).
+    send(error
+    );
+    console.log(error);
+    }
 }
 
 /*MembershipPayment.expirationMembership = async (req, res) => {

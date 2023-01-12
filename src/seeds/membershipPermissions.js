@@ -34,11 +34,11 @@ const basic = [{
     access: false
 }, {
     permission: 'Tipos de perfil',
-    access: ['público']
+    access: ['public']
 }, {
     permission: 'Redes favoritas',
-    access: true,
-    limit: 2
+    access: false,
+    limit: 0
 }, {
     permission: 'Redes sociales favoritas obligatorias',
     access: ['website']
@@ -48,7 +48,7 @@ const basic = [{
 }, {
     permission: "Redes sociales adicionales",
     access: true,
-    limit: 4
+    limit: 3
 }, {
     permission: 'Redes sociales adicionales obligatorias',
     access: []
@@ -97,21 +97,21 @@ const pro = [{
     access: true
 }, {
     permission: 'Tipos de perfil',
-    access: ['público', 'privado']
+    access: ['public', 'private']
 }, {
     permission: 'Redes favoritas',
     access: true,
-    limit: 2
+    limit: 3
 }, {
     permission: 'Redes sociales favoritas obligatorias',
-    access: ['website']
+    access: false
 }, {
     permission: 'Redes sociales favoritas excluidas',
     access: ['facebook', 'twitter', 'linkedin']
 }, {
     permission: "Redes sociales adicionales",
     access: true,
-    limit: 4
+    limit: 8
 }, {
     permission: 'Redes sociales adicionales obligatorias',
     access: []
@@ -160,11 +160,11 @@ const vip = [{
     access: true
 }, {
     permission: 'Tipos de perfil',
-    access: ['público', 'privado', 'vip']
+    access: ['public', 'private', 'vip']
 }, {
     permission: 'Redes favoritas',
     access: true,
-    limit: 2
+    limit: 3
 }, {
     permission: 'Redes sociales favoritas obligatorias',
     access: ['website']
@@ -174,7 +174,7 @@ const vip = [{
 }, {
     permission: "Redes sociales adicionales",
     access: true,
-    limit: 4
+    limit: 8
 }, {
     permission: 'Redes sociales adicionales obligatorias',
     access: []
@@ -186,3 +186,9 @@ const vip = [{
     access: true,
     limit: 5
 }]
+
+module.exports = {
+    basic,
+    pro,
+    vip
+}

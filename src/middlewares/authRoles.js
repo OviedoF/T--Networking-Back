@@ -15,7 +15,7 @@ const verifyToken = async (req, res, next) => {
         console.log(decoded);
         req.userId = decoded.id;
 
-        const user = await User.findById(req.userId, {password: 0});
+        const user = await User.findById(req.userId, {password: false});
         if(!user) return res.status(404).json({token: false,message: "No se reconoce el usuario, por favor logeate."});
 
         next();
@@ -29,7 +29,7 @@ const isAdmin = async (req, res, next) => {
         const user = await User.findById(req.headers.userid);
         console.log(req.headers)
 
-        if(!user) return res.status(404).json({message: "No se reconoce el usuario, por favor logeate."});
+        if(!user) return res.status(401).json({message: "No se reconoce el usuario, por favor logeate."});
 
         const roles = await Role.find({_id: {$in: user.roles}});
 

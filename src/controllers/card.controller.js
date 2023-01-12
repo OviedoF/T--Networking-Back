@@ -23,30 +23,27 @@ const createQR = async (id, cardLink) => {
 
 cardController.createCard = async (req, res) => {
     try {
-        const { filename } = req.files[0]; // image cover
-        const { filename: filename2 } = req.files[1]; // image profile
-        const { filename: filename3 } = req.files[2]; // image logo
+        const perfilImage = req.files[0] || false; // image profile
+        let imageCover = req.files[1] || false; // image cover
+        let logoImage = req.files[2] || false; // image logo
         const {styles} = req.body;
         let { cardLink } = req.body;
         const { userid } = req.headers;
         const { vcardWants } = req.body;
+        console.log(cardLink, 'cardLink');
 
         const code = v4();
-
-        if(!cardLink) {
-            cardLink = code;
-        }
 
         const user = await User.findById(userid);
 
         if(!user) return res.status(404).json({
             message: 'User not found'
         });
-
+        
         const alreadyCardLink = await Card.find({cardLink});
 
         if(alreadyCardLink.length > 0) return res.status(400).json({
-            message: 'Tarjeta ya creada con ese link.'
+            message: 'Tarjeta ya creada con ese link, ve a la pestaña de "datos" y actualiza tu link.'
         });
 
         const newStyleSheet = new CardStyle(JSON.parse(styles));
@@ -68,7 +65,7 @@ cardController.createCard = async (req, res) => {
             title: req.body.jobPosition,
             email: req.body.email,
             workPhone: req.body.cellphone,
-            urlPhoto: `${process.env.ROOT_URL}images/${filename2}`, 
+            urlPhoto: `${process.env.ROOT_URL}images/${perfilImage.filename}`, 
             url: `${process.env.FRONTEND_URL}user/${code}`, 
             note: req.body.biography, 
             id: code
@@ -76,10 +73,10 @@ cardController.createCard = async (req, res) => {
 
         const newCard = new Card({
             ...req.body,
-            coverPhoto: `${process.env.ROOT_URL}images/${filename}`,
-            perfilImage: `${process.env.ROOT_URL}images/${filename2}`,
-            logoPhoto: `${process.env.ROOT_URL}images/${filename3}`,
-            cardLink,
+            coverPhoto: imageCover ? `${process.env.ROOT_URL}images/${imageCover.filename}` : false,
+            perfilImage: perfilImage ? `${process.env.ROOT_URL}images/${perfilImage.filename}` : false,
+            logoPhoto: logoImage ? `${process.env.ROOT_URL}images/${logoImage.filename}` : false,
+            cardLink: cardLink ? cardLink : code,
             user: userid,
             cardStyle: newStyleSheet._id,
             socialMedia: userSocial,
@@ -92,17 +89,102 @@ cardController.createCard = async (req, res) => {
         const userCardsOld = user.cards;
         userCardsOld.push(newCard._id);
 
-        await user.updateOne({cards: userCardsOld});
+        const userToSend = await user.updateOne({cards: userCardsOld}, {
+            new: true
+        }).populate(['cards', 'membership', 'roles']);
         await newStyleSheet.save();
         await newCard.save();
 
-        res.status(200).json({
-            message: 'Card created'
-        });
+        res.status(200).json(userToSend);
     } catch (error) {
         console.log(error);
         res.status(500).json({
             message: 'Error creating card'
+        });
+    }
+};
+
+cardController.updateCard = async (req, res) => {
+    try {
+        const { cardid } = req.params;
+        const { userid } = req.headers;
+        const perfilImage = req.files[0] || false; // image profile
+        let imageCover = req.files[1] || false; // image cover
+        let logoImage = req.files[2] || false; // image logo
+        const {styles} = req.body;
+        let { cardLink } = req.body;
+        const { vcardWants } = req.body;
+
+        const code = v4();
+
+        const user = await User.findById(userid);
+
+        if(!user) return res.status(404).json({
+            message: 'User not found'
+        });
+
+        const card = await Card.findById(cardid);
+
+        if(!card) return res.status(404).json({
+            message: 'Card not found'
+        });
+
+        const alreadyCardLink = await Card.find({cardLink});
+
+        if(alreadyCardLink.length > 0 && alreadyCardLink[0]._id.toString() !== cardid) {
+            console.log(alreadyCardLink[0]._id.toString(), cardid)
+            
+            return res.status(400).json({
+                message: 'Tarjeta ya creada con ese link, ve a la pestaña de "datos" y actualiza tu link.'
+            })
+        };
+
+        const actualizeCardStyle = await CardStyle.findByIdAndUpdate(card.cardStyle, {
+            ...JSON.parse(styles)
+        });
+
+        const userSocial = [];
+        const { socialMedia } = req.body;
+        
+        for (let i = 0; i < socialMedia.length; i++) {
+            userSocial.push(JSON.parse(socialMedia[i]));
+        };
+
+        createQR(code, cardLink);
+
+        VCardCreate({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            organization: req.body.jobEntity,
+            title: req.body.jobPosition,
+            email: req.body.email,
+            workPhone: req.body.cellphone,
+            urlPhoto: `${process.env.ROOT_URL}images/${perfilImage.filename}`, 
+            url: `${process.env.FRONTEND_URL}user/${code}`, 
+            note: req.body.biography, 
+            id: code
+        });
+
+        const newCard = await Card.findByIdAndUpdate(cardid, {
+            ...req.body,
+            coverPhoto: imageCover ? `${process.env.ROOT_URL}images/${imageCover.filename}` : card.imageCover,
+            perfilImage: perfilImage ? `${process.env.ROOT_URL}images/${perfilImage.filename}` : card.perfilImage,
+            logoPhoto: logoImage ? `${process.env.ROOT_URL}images/${logoImage.filename}` : card.logoPhoto,
+            cardLink,
+            socialMedia: userSocial,
+            historialStyles: [...card.historialStyles, actualizeCardStyle._id],
+            vcard: `${process.env.ROOT_URL}vcard/${code}.vcf`,
+            vcardWants,
+            imageQr: `${process.env.ROOT_URL}qr/${code}.png`,
+        });
+
+        res.status(200).json({
+            message: 'Card updated'
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Error updating card'
         });
     }
 };

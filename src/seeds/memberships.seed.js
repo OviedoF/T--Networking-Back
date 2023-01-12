@@ -3,6 +3,7 @@ const Membership = require(path.join('..', 'models', 'membership.model'));
 const {v4} = require('uuid');
 const fs = require('fs-extra');
 require('dotenv').config();
+const {basic, pro, vip} = require(path.join('..', 'seeds', 'membershipPermissions'));
 
 const principalMemberships = [{
     name: 'Básica',
@@ -11,20 +12,23 @@ const principalMemberships = [{
     days: 180,
     priceWithOffer: 0,
     image: 'https://res.cloudinary.com/syphhy/image/upload/v1672427097/image-removebg-preview_18_yffpzs.png',
+    permissions: basic
 }, {
     name: 'BIznes Pro',
     description: 'Membresía Biznes Pro',
-    price: 16964.99,
+    price: 5990,
     days: 60,
     priceWithOffer: 0,
-    image: 'https://res.cloudinary.com/syphhy/image/upload/v1672425779/image-removebg-preview_17_f6qfjh.png'
+    image: 'https://res.cloudinary.com/syphhy/image/upload/v1672425779/image-removebg-preview_17_f6qfjh.png',
+    permissions: pro
 }, {
     name: 'Biznes VIP',
     description: 'Membresía Biznes VIP',
-    price: 50894.99,
+    price: 7990,
     days: 60,
     priceWithOffer: 0,
-    image: 'https://res.cloudinary.com/syphhy/image/upload/v1672425779/image-removebg-preview_17_f6qfjh.png'
+    image: 'https://res.cloudinary.com/syphhy/image/upload/v1672425779/image-removebg-preview_17_f6qfjh.png',
+    permissions: vip
 }]
 
 const createMemberships = async () => {
@@ -41,15 +45,18 @@ const createMemberships = async () => {
                 price: membership.price,
                 days: membership.days,
                 priceWithOffer: membership.priceWithOffer,
-                image: membership.image
+                image: membership.image,
+                permissions: membership.permissions
             });
 
             await membershipCreated.save();
 
             console.log(membershipCreated.description + ' created.');
         })
+        } else {
+
+            Membership.find()
         }
-    
     } catch (error) {
         console.error(error);
     }

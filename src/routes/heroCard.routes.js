@@ -3,11 +3,12 @@ const router = express.Router();
 const path = require('path');
 const { v4 } = require('uuid');
 const heroCardController = require(path.join( __dirname, "..", "controllers", "heroCard.controller" ));
+const {isAdmin} = require(path.join( __dirname, "..", "middlewares", "authRoles" ));
 
-router.post('/creae', heroCardController.createHeroCard);
+router.post('/', isAdmin, heroCardController.createHeroCard);
 
-router.get('/get', heroCardController.getHeroCard);
+router.get('/', heroCardController.getHeroCard);
 
-router.delete('/delete/:id', heroCardController.deleteHeroCard);
+router.delete('/:id', heroCardController.deleteHeroCard);
 
 module.exports = router;

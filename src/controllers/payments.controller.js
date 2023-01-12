@@ -14,13 +14,14 @@ PaymentsController.getPaymentLink = async (req, res) => {
   try {
     const url = "https://api.mercadopago.com/checkout/preferences";
     const { cart, buyer } = req.body;
+    console.log(cart);
 
     const items = cart.map((el) => {
       return {
         id: el._id,
         title: el.name,
         description: el.description,
-        quantity: el.quantity,
+        quantity: parseInt(el.quantity),
         unit_price: Math.ceil(el.price),
         category_id: el.category._id,
         picture_url: el.principalImage,
@@ -37,13 +38,13 @@ PaymentsController.getPaymentLink = async (req, res) => {
       
       items,
       back_urls: {
-        failure: "/failure",
-        pending: "/pending",
-        success: `https://networking-api.eichechile.com/api/payments/success/${buyer}`,
+        failure: `http://tienda-api.biznes.cl/api/payments/failure/${buyer}`,
+        pending: `http://tienda-api.biznes.cl/api/payments/pending/${buyer}`,
+        success: `http://tienda-api.biznes.cl/api/payments/success/${buyer}`,
       },
       auto_return: "approved",
       statement_descriptor: "Networking", //Descripcion en Resumen de Tarjeta
-      notificacion_url: `https://${process.env.ROOT_URL}/api/payments/notifications`,
+      notificacion_url: `http://tienda-api.biznes.cl/api/payments/notifications`,
       additional_info: "COMPRA",
     };
 
@@ -56,7 +57,7 @@ PaymentsController.getPaymentLink = async (req, res) => {
 
     return res.status(201).send(payment.data);
   } catch (error) {
-    console.log(error);
+    console.log(Object.keys(error));
     return res.status(500).send(Object.keys(error));
   }
 };
@@ -128,5 +129,23 @@ PaymentsController.getOrders = async (req, res) => {
     res.status(500).send(error);
   }
 }
+
+PaymentsController.checkPayment = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const url = `https://api.mercadopago.com/v1/payments/${id}`;
+
+    res.status(200).send({
+      message: "Pedido creado exitosamente",
+      params: req.params,
+      body: req.body,
+      headers: req.headers,
+    });
+  } catch (error) {
+    res.status
+    console.log(error);
+  }
+};
 
 module.exports = PaymentsController;

@@ -254,7 +254,6 @@ emailsController.sendRequest = async (req, res) => {
         console.log(error);
     }
 }
-
         
 
 module.exports = emailsController;

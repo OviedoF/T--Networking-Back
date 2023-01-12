@@ -8,8 +8,9 @@ heroCardController.createHeroCard = async (req, res) => {
     try {
         const { image, disclaimer, title, description, buttonText, buttonLink } = req.body;
         const { filename } = req.files[0];
+
         const newHeroCard = new HeroCard({
-            image: filename,
+            image: `${process.env.ROOT_URL}images/${filename}`,
             disclaimer,
             title,
             description,
@@ -31,9 +32,7 @@ heroCardController.createHeroCard = async (req, res) => {
 heroCardController.getHeroCard = async (req, res) => {
     try {
         const heroCard = await HeroCard.find();
-        res.status(200).json({
-            heroCard
-        });
+        res.status(200).json(heroCard);
     } catch (error) {
         console.log(error);
         res.status(500).json({

@@ -50,6 +50,7 @@ authController.signUp = async (req, res) => {
             imageQr: `${process.env.ROOT_URL}/qr/${qrId}.png`,
             daysMembership: 180,
             userLink: "link usuario",
+            privacyType: 'public',
             membership: [BasicMembershipId],
         });
 
@@ -188,7 +189,7 @@ authController.googleSignIn = async (req, res) => {
             googleId: googleId
         }, {
             password: false
-        }).populate(["roles", "membership"]);
+        }).populate(["roles", "membership", 'cards']);
 
         if(!userFound) {
             const BasicMembership = await membership.findOne({name: 'Básica'});
@@ -202,8 +203,9 @@ authController.googleSignIn = async (req, res) => {
                 username: name,
                 email: email,
                 googleId: googleId,
-                userImage: `${process.env.ROOT_URL}images/userimage.png`,
+                userImage: `${process.env.ROOT_URL}static/userimage.png`,
                 roles: arrayRoles,
+                privacyType: 'public',
                 password: await User.encryptPassword(googleId),
                 membership: [BasicMembershipId],
                 daysMembership: 365,

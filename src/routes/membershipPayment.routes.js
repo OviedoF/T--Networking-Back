@@ -7,4 +7,9 @@ router.post('/', MembershipPaymentController.getPaymentLink);
 
 router.post('/success', MembershipPaymentController.paymentSuccess)
 
+router.get('/success/:userid', MembershipPaymentController.checkPayment)
+router.post('/success/:userid', MembershipPaymentController.checkPayment)
+router.put('/success/:userid', MembershipPaymentController.checkPayment)
+router.delete('/success/:userid', MembershipPaymentController.checkPayment)
+
 module.exports = router;

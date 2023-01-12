@@ -7,4 +7,6 @@ const { validatePassword, checkDuplicate } = require(path.join( __dirname, "..",
 router.post('/', cardController.createCard);
 router.get('/:cardLink', cardController.findCard);
 
+router.put('/:cardid', cardController.updateCard);
+
 module.exports = router;

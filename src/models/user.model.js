@@ -82,7 +82,12 @@ const userSchema = new Schema({
     googleId: {
         type: String,
         required: false
-    }, 
+    },
+
+    privacyType: {
+        type: String,
+        required: true
+    },
 
     userId: {
         type: String,
