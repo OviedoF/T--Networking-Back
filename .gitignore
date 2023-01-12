@@ -1,2 +1,5 @@
 node_modules
 .env
+src/public/images
+src/public/qr
+src/public/vcf
