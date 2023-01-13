@@ -21,7 +21,7 @@ const InitAgenda = () => {
     });
 
     agenda.on('ready', () => {
-        agenda.every('10 seconds', 'discountDays');
+        agenda.every('1 minutes', 'discountDays');
         agenda.start();
         console.log('[AGENDA] ✨✨ Agenda is ready!');
     });

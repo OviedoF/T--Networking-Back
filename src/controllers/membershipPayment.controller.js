@@ -49,7 +49,7 @@ MembershipPayment.getPaymentLink = async (req, res) => {
 MembershipPayment.paymentSuccess = async (req, res) => {
     try {
         const { idbuyer } = req.headers;
-        const { membership } = req.body;
+        const { membership, period } = req.body;
 
         const membershipFinded = await Subscription.find({ _id: membership });
         const user = await User.findById(idbuyer);
@@ -63,7 +63,8 @@ MembershipPayment.paymentSuccess = async (req, res) => {
         };
 
         await User.findByIdAndUpdate(idbuyer, {
-            membership: [membershipFinded[0]._id]
+            membership: [membershipFinded[0]._id],
+            daysMembership: period === "month" ? 30 : 365
         });
 
         res.status(200).send('Membresia actualizada')

@@ -1,63 +1,18 @@
 const {Schema, model} = require('mongoose');
 
 const networkingSchema = new Schema({
-    profileImage: {
-        type: String,
-        required: true
-    },
-    bannerImage: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    city: {
-        type: String,
-        required: true
-    },
-    direction: {
-        street: String,
-        height: Number
-    },
-    socialMedia: {
-        website: String,
-        whatsapp: String,
-        facebook: String,
-        instagram: String,
-        youtube: String,
-        linkedin: String,
-        tiktok: String,
-        twitter: String
-    },  
-    cellPhone: String,
-    email: String,
-    products: [{
-        ref: "Product",
-        type: Schema.Types.ObjectId
-    }],
-    comments: [{
-        ref: "Comment",
-        type: Schema.Types.ObjectId
-    }],
-    posts: [{
-        ref: "Post",
-        type: Schema.Types.ObjectId
-    }],
-    salesHistory: [{
-        ref: "Purchase",
-        type: Schema.Types.ObjectId
-    }],
-    notifications: [{
-        subject: String,
-        message: String,
-        redirect: String
-    }]
+    street: {type: String, required: true},
+    city: {type: String, required: true},
+    region: {type: String, required: true},
+    email: {type: String, required: true},
+    phone: {type: String, required: true},
+    aboutWeImage: {type: String },
+    aboutWeText: {type: String, required: true},
+    whatsApp: {type: String, required: true},
+    facebook: {type: String, required: true},
+    instagram: {type: String, required: true},
+    twitter: {type: String, required: true},
+    linkedin: {type: String, required: true},
 });
 
 module.exports = model('Networking', networkingSchema);

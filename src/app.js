@@ -8,6 +8,7 @@ const createInitialRoles = require(path.join(__dirname, 'seeds', 'initialRoles')
 const createInitialAdmin = require(path.join(__dirname, 'seeds', 'initialAdmin'));
 const createInitialMemberships = require(path.join(__dirname, 'seeds', 'memberships.seed'));
 const createInitialCategories = require(path.join(__dirname, 'seeds', 'categories.seed'));
+const createNetworking = require(path.join(__dirname, 'seeds', 'networking.seed'));
 const InitAgenda = require(path.join(__dirname, 'libs', 'InitAgenda'));
 
 // initialize
@@ -40,6 +41,7 @@ createInitialCategories();
 createInitialMemberships();
 createInitialRoles();
 createInitialAdmin();
+createNetworking();
 
 // routes
 const routeFiles = fs.readdirSync(path.join(__dirname, 'routes')).filter( (file) => file.endsWith(".js") );
