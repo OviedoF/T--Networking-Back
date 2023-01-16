@@ -16,8 +16,6 @@ emailsController.registrySuccess = async (req, res) => {
         const user = await User.findOne({email});
         if(!user) return res.status(404).send('No se ha encontrado el usuario.');
 
-        console.log(user.userImage)
-
         const transporter = await nodemailer.createTransport({
             host: process.env.MAIL_HOST,
             port: process.env.MAIL_PORT,

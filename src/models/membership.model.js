@@ -29,7 +29,11 @@ const membershipSchema = new Schema({
         type: String,
         required: true
     },
-    permissions: [Object]
+    permissions: [Object],
+    discount: {
+        type: Number,
+        required: true
+    }
 
     // permissions: {
     //     perfilPhoto: Boolean,

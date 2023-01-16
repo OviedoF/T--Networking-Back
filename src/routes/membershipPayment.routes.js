@@ -5,11 +5,8 @@ const MembershipPaymentController = require(path.join(__dirname, '..', 'controll
 
 router.post('/', MembershipPaymentController.getPaymentLink);
 
-router.post('/success', MembershipPaymentController.paymentSuccess)
+router.post('/success/:buyer/:membership/:period', MembershipPaymentController.paymentSuccess)
 
-router.get('/success/:userid', MembershipPaymentController.checkPayment)
-router.post('/success/:userid', MembershipPaymentController.checkPayment)
-router.put('/success/:userid', MembershipPaymentController.checkPayment)
-router.delete('/success/:userid', MembershipPaymentController.checkPayment)
+router.get('/success/:buyer/:membership/:period', MembershipPaymentController.paymentSuccess);
 
 module.exports = router;

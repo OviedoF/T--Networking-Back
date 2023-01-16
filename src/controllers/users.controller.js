@@ -141,24 +141,28 @@ usersControllers.actualizeShoppingCart = async (req, res) => {
                 quantity: req.body.quantity,
                 colorSelected: req.body.color,
                 linkToRedirect: req.body.linkToRedirect,
-                images: []
+                files: []
             }
     
             req.files.forEach((file) => {
-                objectToCart.images.push(`${process.env.ROOT_URL}images/${file.filename}`);
+                objectToCart.files.push(`${process.env.ROOT_URL}images/${file.filename}`);
             })
-    
-            console.log(objectToCart);
 
             shoppingCart.push(objectToCart);
         }
 
         if(type === 'remove') {
             const productIndex = shoppingCart.findIndex((productCart) => productCart._id === product._id);
+            
+            product.files.forEach((file) => {
+                const oldImage = file.split('/images/')[1];
+                const oldImageRoute = path.join(__dirname, '..', 'public', 'images', oldImage);
+
+                deleteImage(oldImageRoute);
+            });
+
             shoppingCart.splice(productIndex, 1);
         }
-
-        console.log(shoppingCart);
 
         const userUpdated = await User.findByIdAndUpdate(id, {
             shoppingCart

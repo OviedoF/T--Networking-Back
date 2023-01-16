@@ -11,19 +11,19 @@ const MembershipPayment = {}
 MembershipPayment.getPaymentLink = async (req, res) => {
     try {
         const url = "https://api.mercadopago.com/preapproval";
-        const { cart, userid } = req.body;
+        const { cart, userid, membership, period } = req.body;
         let date = moment().add(5, 'minutes').toISOString();
-        console.log(userid);
+        console.log(cart);
 
         const body = {
             auto_recurring: {
                 start_date: date,
                 frequency: 1,
-                frequency_type: "months",
-                transaction_amount: 15000,
+                frequency_type: period === 'month' ? "months" : "years",
+                transaction_amount: cart.priceWithOffer ? parseInt(cart.priceWithOffer) : parseInt(cart.price),
                 currency_id: "CLP"
             },
-            back_url: `http://tienda-api.biznes.cl/api/membershipPayment/success/${userid}`,
+            back_url: `http://tienda-api.biznes.cl/api/membershipPayment/success/${userid}/${cart._id}/${period}`,
             payer_email: "test_user_49360370@testuser.com",
             reason: `${cart.description.toUpperCase()} POR ${cart.period === "month" ? "1 MES" : "1 AÑO"}`,
             notificacion_url: `http://tienda-api.biznes.cl/api/membershipPayment/notification/${userid}/${cart._id}`,
@@ -41,18 +41,19 @@ MembershipPayment.getPaymentLink = async (req, res) => {
 
         return res.status(201).send(subscription.data)
     } catch (error) {
-        console.log(error.response.data);
+        console.log(error);
         return res.status(500).send(error);
     }
 }
 
 MembershipPayment.paymentSuccess = async (req, res) => {
     try {
-        const { idbuyer } = req.headers;
-        const { membership, period } = req.body;
+        const { buyer: idbuyer, membership, period } = req.params;
 
         const membershipFinded = await Subscription.find({ _id: membership });
-        const user = await User.findById(idbuyer);
+        const user = await User.findById(idbuyer)
+
+        console.log(membershipFinded[0].discount);
 
         if (!user) {
             return res.status(404).send('El usuario no existe');
@@ -64,10 +65,13 @@ MembershipPayment.paymentSuccess = async (req, res) => {
 
         await User.findByIdAndUpdate(idbuyer, {
             membership: [membershipFinded[0]._id],
-            daysMembership: period === "month" ? 30 : 365
+            daysMembership: period === "month" ? 30 : 365,
+            membershipDiscount: membershipFinded[0].discount,
         });
-
-        res.status(200).send('Membresia actualizada')
+        
+        res.writeHead(201, {
+            Location: `${process.env.FRONTEND_URL}#/payment-success`
+        }).end();
     } catch (error) {
     res.status(500).send(error);
     console.log(error);

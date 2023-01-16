@@ -70,4 +70,22 @@ OrdersControllers.orderManagement = async (req, res) => {
     }
 }*/
 
+OrdersControllers.getOrdersById = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const orderFinded = await Purchase
+        .find({
+            buyer: id
+        }).populate('buyer')
+
+        if(!orderFinded) return res.status(404).send("No se ha encontrado pedidos.");
+
+        res.status(200).send(orderFinded)
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send
+        (error);
+    }
+}
+
 module.exports = OrdersControllers

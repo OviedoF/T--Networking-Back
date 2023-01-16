@@ -9,8 +9,7 @@ router.post(
   [
     validatePassword,
     checkDuplicate( "email", "Email ya existente, por favor entre en su cuenta."),
-    checkDuplicate( "username", "Nombre de usuario ya registrado, regístrese con uno diferente."),
-    checkDuplicate( "userId", "Identificador de usuario ya asignado a una cuenta." )
+    checkDuplicate( "username", "Nombre de usuario ya registrado, regístrese con uno diferente.")
   ],
   authController.signUp
 ); // checkDuplicate recibe el campo a verificar si está duplicado y un mensaje en caso de que lo esté.

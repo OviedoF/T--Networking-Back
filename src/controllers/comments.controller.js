@@ -6,7 +6,7 @@ const commentsController = {};
 
 commentsController.getComments = async (req, res) => {
     try {
-        const comments = await Comment.find();
+        const comments = await Comment.find().populate('author');
         res.status(200).send(comments);
     } catch (error) {
         console.log(error);
@@ -29,7 +29,7 @@ commentsController.createComment = async (req, res) => {
         const comment = new Comment({
             author,
             comment: description,
-            status: 'in process',
+            aproved: false
         });
 
         await comment.save();

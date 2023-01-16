@@ -12,7 +12,8 @@ const principalMemberships = [{
     days: 180,
     priceWithOffer: 0,
     image: 'https://res.cloudinary.com/syphhy/image/upload/v1672427097/image-removebg-preview_18_yffpzs.png',
-    permissions: basic
+    permissions: basic,
+    discount: 0
 }, {
     name: 'BIznes Pro',
     description: 'Membresía Biznes Pro',
@@ -20,7 +21,8 @@ const principalMemberships = [{
     days: 60,
     priceWithOffer: 0,
     image: 'https://res.cloudinary.com/syphhy/image/upload/v1672425779/image-removebg-preview_17_f6qfjh.png',
-    permissions: pro
+    permissions: pro,
+    discount: 5
 }, {
     name: 'Biznes VIP',
     description: 'Membresía Biznes VIP',
@@ -28,7 +30,8 @@ const principalMemberships = [{
     days: 60,
     priceWithOffer: 0,
     image: 'https://res.cloudinary.com/syphhy/image/upload/v1672425779/image-removebg-preview_17_f6qfjh.png',
-    permissions: vip
+    permissions: vip,
+    discount: 10
 }]
 
 const createMemberships = async () => {

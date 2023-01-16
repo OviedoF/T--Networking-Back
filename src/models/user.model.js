@@ -89,8 +89,8 @@ const userSchema = new Schema({
         required: true
     },
 
-    userId: {
-        type: String,
+    membershipDiscount: {
+        type: Number,
         required: false
     }
 

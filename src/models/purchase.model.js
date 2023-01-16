@@ -18,6 +18,7 @@ const purchaseSchema = new Schema({
   cart: {
     type: Object
   },
+  files: [String],
   paymentMethod: String,
   images: [String],
   type: String,

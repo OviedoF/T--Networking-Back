@@ -91,18 +91,23 @@ PaymentsController.paymentSuccess = async (req, res) => {
       type: "Productos",
     });
 
+    console.log(newPurchase);
+    console.log('NEW PURCHASE <------------');
+
     const purchaseSaved = await newPurchase.save();
 
-    const userUpdated = await User.findByIdAndUpdate({_id: buyer}, { '$push' : { shoppingHistory : purchaseSaved._id, 
-      shoppingCart: [] }}, {new: true})
+    const userUpdated = await User.findByIdAndUpdate({_id: buyer}, { '$push' : { shoppingHistory : purchaseSaved._id, },
+    '$set' : { shoppingCart: [] }
+    }, {new: true}).populate(['roles', 'membership', 'cards'])
 
+    res.writeHead(201, {
+      Location: `${process.env.FRONTEND_URL}#/payment-success`
+    }).end();
     
-    res.status(201).send({
-      message: "Pedido creado exitosamente",
-      params: req.params,
-      body: req.body,
-      headers: req.headers,
-    });
+    
+    res.status(201).send(
+      userUpdated
+    );
   } catch (error) {
     res.status(500).send(error);
     console.log(error);
@@ -127,6 +132,20 @@ PaymentsController.getOrders = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
+  }
+}
+
+PaymentsController.getOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const purchaseFinded = await Purchase
+    .findById(id)
+    .populate(['buyer', 'cart.product', 'cart.category', 'cart.seller'])
+    
+    res.status(200).send(purchaseFinded);
+  } catch (error) {
+    console.log(error);
+    res.status
   }
 }
 
