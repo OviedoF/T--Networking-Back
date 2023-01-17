@@ -10,7 +10,7 @@ const News = require(path.join(__dirname, '..', 'models', 'news.model'));
 const Comments = require(path.join(__dirname, '..', 'models', 'comments.model'));
 const membership = require(path.join(__dirname, '..', 'models', 'membership.model'));
 const nodemailer = require('nodemailer');
-const MembershipEmails = require(path.join(__dirname, '..', 'emails', 'membershipEmails.js'));
+const MembershipEmails = require(path.join(__dirname, '..', 'emails', 'MembershipEmails.js'));
 require('dotenv').config();
 
 const agendaController = {};
