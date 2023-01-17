@@ -4,7 +4,7 @@ const Purchase = require(path.join( __dirname, "..", "models", "purchase.model.j
 const User = require(path.join(__dirname, "..", "models", "user.model"))
 const sendEmail = require(path.join(__dirname, '..', 'libs', 'emails.templates'));
 const nodemailer = require('nodemailer');
-const ConfirmingPurchaseEmail = require(path.join(__dirname, '..', 'emails', 'confirmingPurchaseEmail.js'));
+const ConfirmingPurchaseEmail = require(path.join(__dirname, '..', 'emails', 'ConfirmingPurchaseEmail.js'));
 
 const OrdersControllers = {};
 
