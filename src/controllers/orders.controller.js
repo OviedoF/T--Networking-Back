@@ -3,6 +3,8 @@ const path = require("path");
 const Purchase = require(path.join( __dirname, "..", "models", "purchase.model.js" ));
 const User = require(path.join(__dirname, "..", "models", "user.model"))
 const sendEmail = require(path.join(__dirname, '..', 'libs', 'emails.templates'));
+const nodemailer = require('nodemailer');
+const ConfirmingPurchaseEmail = require(path.join(__dirname, '..', 'emails', 'confirmingPurchaseEmail.js'));
 
 const OrdersControllers = {};
 
@@ -22,13 +24,44 @@ OrdersControllers.orderManagement = async (req, res) => {
         }
 
         if(state === 'Enviado') {
-            await Purchase.findByIdAndUpdate(id, {
+            const purchase = await Purchase.findByIdAndUpdate(id, {
                     state : 'Enviado',
                     trackingNumber: trackingNumber,
                     shippingEntity: shippingEntity,
                     shippingDate: sendDate,
                     estimatedDate: estimatedDate
+            }, {
+                new: true
             });
+   
+            const user = await User.findById(purchase.buyer);
+
+            if(!user) return res.status(404).send('El usuario no existe.');
+
+            console.log(user.email);
+
+            const transporter = await nodemailer.createTransport({
+                host: process.env.MAIL_HOST,
+                port: process.env.MAIL_PORT,
+                secure: true,
+                auth: {
+                    user: process.env.MAIL_USERNAME,
+                    pass: process.env.MAIL_PASSWORD
+                },
+                tls: {
+                    rejectUnauthorized: false
+                }
+            });
+    
+            const messageHtml = ConfirmingPurchaseEmail("https://res.cloudinary.com/syphhy/image/upload/v1672259034/logo_cplmck.png", "Se ha enviado su pedido!",
+            `Hola ${user.username}, gracias por confiar en nosotros!`, "Con este codigo segui el paso de tu pedido!", 'https://networking.eichechile.com/', trackingNumber ,'Networking APP')
+    
+            await transporter.sendMail({
+                from: `Networking APP <${process.env.MAIL_USERNAME}>`,
+                to: user.email,
+                subject: 'Networking APP - Compra exitosa!',
+                html: messageHtml
+            })
         }
 
         if(state === 'Listo para retirar') {

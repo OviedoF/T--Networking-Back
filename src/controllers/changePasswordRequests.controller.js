@@ -56,7 +56,7 @@ changePasswordController.createCode = async (req, res) => {
 
         const emailSended = await transporter.sendMail({
             from: `'Networking APP' <${process.env.MAIL_USERNAME}>`,
-            to: newRequest.email,
+            to: email,
             subject: 'Networking APP - Solicitud de cambio de contraseña',
             html: messageHtml
         })
