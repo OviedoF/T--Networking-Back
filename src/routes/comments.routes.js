@@ -5,6 +5,8 @@ const commentsController = require(path.join( __dirname, "..", "controllers", "c
 
 router.get('/', commentsController.getComments);
 
+router.get('/aproved', commentsController.getAprovedComments);
+
 router.post('/', commentsController.createComment);
 
 router.put('/approve/:id', commentsController.approveComment);

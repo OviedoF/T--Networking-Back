@@ -10,8 +10,7 @@ const commentSchema = new Schema({
         required: true
     },
     aproved: {
-        type: Boolean,
-        default: false
+        type: Boolean
     }
 }, {
     timestamps: true

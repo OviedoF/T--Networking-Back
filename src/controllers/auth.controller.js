@@ -9,7 +9,9 @@ const User = require(path.join(__dirname, '..', 'models', 'user.model'));
 const News = require(path.join(__dirname, '..', 'models', 'news.model'));
 const Comments = require(path.join(__dirname, '..', 'models', 'comments.model'));
 const membership = require(path.join(__dirname, '..', 'models', 'membership.model'));
-
+require('dotenv').config();
+const nodemailer = require('nodemailer');
+const LogInEmail = require(path.join(__dirname, '..', 'emails', 'LogIn.js'))
 const authController = {};
 
 const createQR = async (id) => {
@@ -59,6 +61,33 @@ authController.signUp = async (req, res) => {
         const token = jwt.sign({id: savedUser._id}, 'FKDOCKODfkpodKCDfkD0F9Dkc90d', {
             expiresIn: 86400
         });
+
+        const transporter = nodemailer.createTransport({
+            host: process.env.MAIL_HOST,
+            port: process.env.MAIL_PORT,
+            secure: true,
+            auth: {
+                user: process.env.MAIL_USERNAME,
+                pass: process.env.MAIL_PASSWORD
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+    
+        const messageHtml = LogInEmail("https://res.cloudinary.com/syphhy/image/upload/v1672259034/logo_cplmck.png", 'Bienvenido a Networking', 
+        savedUser.username, `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam.`, 
+        `https://networking.eichechile.com/user/${savedUser._id}`, 'Vé tu perfil!', 
+        'de parte de', 'https://networking.eichechile.com/', 'Networking APP');
+    
+        const emailSended = await transporter.sendMail({
+            from: `Networking APP <${process.env.MAIL_USERNAME}>`,
+            to: 'oviedofederico039@gmail.com',
+            subject: 'Networking APP - Bienvenido!',
+            html: messageHtml
+        })
+
+        console.log(emailSended);
 
         res.status(201).send({
             token,

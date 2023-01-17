@@ -44,7 +44,12 @@ heroCardController.getHeroCard = async (req, res) => {
 heroCardController.deleteHeroCard = async (req, res) => {
     try {
         const { id } = req.params;
-        await HeroCard.findByIdAndDelete
+        const deletedCard = await HeroCard.findByIdAndDelete(id);
+
+        if(!deletedCard) return res.status(404).json({
+            message: 'Hero card not found'
+        });
+
         res.status(200).json({
             message: 'Hero card deleted successfully'
         });

@@ -16,6 +16,18 @@ commentsController.getComments = async (req, res) => {
     }
 }
 
+commentsController.getAprovedComments = async (req, res) => {
+    try {
+        const comments = await Comment.find({aproved: true}).populate('author');
+        res.status(200).send(comments);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+}
+
 commentsController.createComment = async (req, res) => {
     try {
         const {author, description} = req.body;
@@ -51,14 +63,12 @@ commentsController.approveComment = async (req, res) => {
         const {id} = req.params;
 
         const comment = await Comment.findByIdAndUpdate(id, {
-            status: 'approved'
-        });
+            aproved: true
+        }, {new: true});
 
         if(!comment) return res.status(404).json({
             message: 'Comentario no encontrado'
-        });
-
-        await comment.save();
+        })
 
         res.status(200).json({
             message: 'Comentario aprobado correctamente.'
@@ -77,14 +87,12 @@ commentsController.rejectComment = async (req, res) => {
         const {id} = req.params;
 
         const comment = await Comment.findByIdAndUpdate(id, {
-            status: 'rejected'
+            aproved: false
         });
 
         if(!comment) return res.status(404).json({
             message: 'Comentario no encontrado'
-        });
-
-        await comment.save();
+        })
 
         res.status(200).json({
             message: 'Comentario no aprobado.'
