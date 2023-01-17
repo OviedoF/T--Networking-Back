@@ -49,7 +49,8 @@ const createMemberships = async () => {
                 days: membership.days,
                 priceWithOffer: membership.priceWithOffer,
                 image: membership.image,
-                permissions: membership.permissions
+                permissions: membership.permissions,
+                discount: membership.discount
             });
 
             await membershipCreated.save();
