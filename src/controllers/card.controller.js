@@ -81,9 +81,9 @@ cardController.createCard = async (req, res) => {
             cardStyle: newStyleSheet._id,
             socialMedia: userSocial,
             historialStyles: [newStyleSheet._id],
-            vcard: `${process.env.ROOT_URL}vcard/${code}.vcf`,
+            vcard: `${process.env.ROOT_URL}api/download/vcard/${code}.vcf`,
             vcardWants,
-            imageQr: `${process.env.ROOT_URL}qr/${code}.png`,
+            imageQr: `${process.env.ROOT_URL}api/download/qr/${code}.png`,
         });
 
         const userCardsOld = user.cards;
