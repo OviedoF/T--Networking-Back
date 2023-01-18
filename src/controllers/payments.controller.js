@@ -99,11 +99,6 @@ PaymentsController.paymentSuccess = async (req, res) => {
     const userUpdated = await User.findByIdAndUpdate({_id: buyer}, { '$push' : { shoppingHistory : purchaseSaved._id, },
     '$set' : { shoppingCart: [] }
     }, {new: true}).populate(['roles', 'membership', 'cards'])
-
-    res.writeHead(201, {
-      Location: `${process.env.FRONTEND_URL}#/payment-success`
-    }).end();
-    
     
     res.status(201).send(
       userUpdated

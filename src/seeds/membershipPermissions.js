@@ -48,7 +48,7 @@ const basic = [{
 }, {
     permission: "Redes sociales adicionales",
     access: true,
-    limit: 3
+    limit: 4
 }, {
     permission: 'Redes sociales adicionales obligatorias',
     access: []
